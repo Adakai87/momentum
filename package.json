@@ -1,0 +1,16 @@
+{
+  "name": "life-tracker",
+  "version": "1.0.0",
+  "description": "My Life Tracker App",
+  "private": true,
+  "scripts": {
+    "deploy": "firebase deploy --only hosting",
+    "ios": "npx cap sync ios && npx cap open ios"
+  },
+  "dependencies": {
+    "@capacitor/cli": "^6.0.0",
+    "@capacitor/core": "^6.0.0",
+    "@capacitor/ios": "^6.0.0",
+    "firebase": "^12.11.0"
+  }
+}

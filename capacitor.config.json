@@ -1,0 +1,11 @@
+{
+  "appId": "com.adakai.lifetracker",
+  "appName": "MOMENTUM",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  },
+  "ios": {
+    "contentInset": "automatic"
+  }
+}
