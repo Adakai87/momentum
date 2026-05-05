@@ -10,6 +10,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="MOMENTUM" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
   <link rel="apple-touch-icon" href="/icon-192.png" />
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1294,54 +1296,72 @@
     .rm-tooltip-title { font-weight: 700; margin-bottom: 3px; }
     .rm-tooltip-meta { color: var(--text-muted); font-size: 13px; }
 
-    /* ─── ROADMAP GOALS ─── */
-    .rm-goals {
-      display: flex; flex-direction: column;
-      border: 1px solid var(--border); border-radius: 10px;
-      overflow: hidden;
-      margin-bottom: 20px;
-      transition: max-height 0.3s ease, opacity 0.3s ease, margin 0.3s ease;
-      max-height: 1000px; opacity: 1;
+    /* ─── MISSION BOARD (ROADMAP GOALS) ─── */
+    .rm-mission-board {
+      display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px;
+      max-height: 400px; overflow: hidden; opacity: 1;
+      transition: max-height 0.3s ease, opacity 0.25s ease, margin 0.3s ease;
     }
-    .rm-goals.collapsed { max-height: 0; opacity: 0; margin-bottom: 0; }
-    .rm-goal-row {
-      border-bottom: 1px solid var(--border);
+    .rm-mission-board.collapsed { max-height: 0; opacity: 0; margin-bottom: 0; }
+
+    /* ── Week hero ── */
+    .rm-mission-hero {
+      position: relative;
+      background: linear-gradient(135deg, rgba(99,102,241,0.1) 0%, rgba(99,102,241,0.04) 100%);
+      border: 1px solid rgba(99,102,241,0.35);
+      border-left: 3px solid #6366f1;
+      border-radius: 10px;
+      padding: 12px 16px 14px;
+      box-shadow: 0 0 28px rgba(99,102,241,0.1), inset 0 1px 0 rgba(255,255,255,0.04);
     }
-    .rm-goal-row:last-child { border-bottom: none; }
-    .rm-goal-row-header {
-      display: flex; align-items: center; gap: 8px;
-      padding: 9px 14px; cursor: pointer;
-      background: var(--surface);
-      transition: background 0.15s;
-      user-select: none;
+    .rm-mission-hero-label {
+      font-size: 10px; font-weight: 800; letter-spacing: 0.1em;
+      text-transform: uppercase; color: #6366f1;
+      margin-bottom: 8px; display: flex; align-items: center; gap: 5px;
     }
-    .rm-goal-row-header:hover { background: var(--surface2); }
-    .rm-goal-row-label {
-      display: flex; align-items: center; gap: 6px;
-      font-size: 12px; font-weight: 600; color: var(--accent-daily);
-      text-transform: uppercase; letter-spacing: 0.06em; flex: 1;
-    }
-    .rm-goal-row-chevron {
-      color: var(--border2); transition: transform 0.22s;
-      display: flex; align-items: center;
-      font-size: 14px; line-height: 1;
-    }
-    .rm-goal-row.collapsed .rm-goal-row-chevron { transform: rotate(-90deg); }
-    .rm-goal-row-body {
-      overflow: hidden;
-      max-height: 200px; opacity: 1;
-      transition: max-height 0.25s ease, opacity 0.2s ease;
-      background: var(--surface);
-    }
-    .rm-goal-row.collapsed .rm-goal-row-body { max-height: 0; opacity: 0; }
-    .rm-goal-input {
+    .rm-mission-hero-ta {
       width: 100%; background: transparent; border: none; outline: none;
-      color: var(--text); font-size: 15px; line-height: 1.6;
-      resize: none; font-family: inherit;
-      padding: 8px 14px 12px;
-      display: block;
+      font-size: 17px; font-weight: 600; color: var(--text);
+      line-height: 1.55; resize: none; overflow: hidden;
+      display: block; min-height: 26px; font-family: inherit;
     }
-    .rm-goal-input::placeholder { color: var(--text-muted); opacity: 0.5; }
+    .rm-mission-hero-ta::placeholder { color: var(--text-muted); opacity: 0.35; font-weight: 400; }
+
+    /* ── Horizon cards ── */
+    .rm-mission-horizons { display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; }
+    .rm-horizon-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-top: 2.5px solid var(--hc, #6366f1);
+      border-radius: 8px; padding: 8px 10px;
+      cursor: pointer; transition: background .12s, box-shadow .12s;
+      min-width: 0; user-select: none;
+    }
+    .rm-horizon-card:hover { background: var(--surface2); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .rm-horizon-card.open { box-shadow: 0 0 0 1px var(--hc,#6366f1), 0 4px 12px rgba(0,0,0,0.15); }
+    .rm-horizon-label {
+      font-size: 9px; font-weight: 800; letter-spacing: 0.09em;
+      text-transform: uppercase; color: var(--hc, #6366f1); margin-bottom: 5px;
+    }
+    .rm-horizon-preview {
+      font-size: 11px; color: var(--text); line-height: 1.5; min-height: 14px;
+      white-space: pre-line;
+      display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .rm-horizon-preview.empty { color: var(--text-muted); opacity: 0.35; font-style: italic; }
+    .rm-horizon-card.open .rm-horizon-preview { display: none; }
+    .rm-horizon-ta-wrap { overflow: hidden; max-height: 0; transition: max-height .25s ease; }
+    .rm-horizon-card.open .rm-horizon-ta-wrap { max-height: 400px; margin-top: 6px; }
+    .rm-horizon-ta {
+      width: 100%; background: transparent;
+      border: none; border-top: 1px solid var(--border);
+      outline: none; padding: 8px 0 4px;
+      font-size: 12px; color: var(--text); resize: none;
+      line-height: 1.6; overflow: hidden; font-family: inherit; display: block;
+      min-height: 64px;
+    }
+    .rm-horizon-ta::placeholder { color: var(--text-muted); opacity: 0.35; }
+
     .rm-goals-toggle {
       display: flex; align-items: center; gap: 5px;
       font-size: 11px; color: var(--text-muted); background: none; border: none;
@@ -1351,7 +1371,6 @@
     .rm-goals-toggle:hover { background: var(--surface2); color: var(--text); }
     .rm-goals-toggle .toggle-icon { transition: transform 0.25s; display: inline-block; }
     .rm-goals-toggle.collapsed .toggle-icon { transform: rotate(-90deg); }
-    /* rm-goal-card/label/input → rm-goal-row に移行 */
 
     .rm-progress-ring {
       position: absolute; top: 50%; transform: translateY(-50%) translateX(-50%);
@@ -1443,6 +1462,21 @@
       transform: translateY(-2px) !important;
       box-shadow: 0 3px 10px rgba(0,0,0,0.14) !important;
     }
+    .rm-task-check {
+      width: 14px; height: 14px;
+      border-radius: 3px;
+      border: 1.5px solid currentColor;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0;
+      transition: opacity 0.15s;
+      cursor: pointer;
+      background: transparent;
+      font-size: 9px; font-weight: 900;
+      margin-right: 4px;
+    }
+    .rm-item-task:hover .rm-task-check { opacity: 0.65; }
+    .rm-task-check.checked { opacity: 1 !important; background: currentColor; color: #fff; }
     .rm-add-btn {
       margin-left: auto; background: none; border: 1px solid var(--border);
       color: var(--text-muted); width: 20px; height: 20px; border-radius: 5px;
@@ -1823,6 +1857,254 @@
     .dash-diary-chip:hover { border-color:#6366f1; }
     .dash-diary-date { font-size:11px; color:var(--text-muted); margin-bottom:2px; }
     .dash-diary-title { font-size:12px; font-weight:600; color:var(--text); }
+    /* ─── DASHBOARD v2 ─── */
+    /* ① KPI Row */
+    .d2-kpi-row { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+    @media(max-width:700px) { .d2-kpi-row { grid-template-columns:repeat(2,1fr); } }
+    .d2-kpi-card { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:20px 18px 16px; position:relative; overflow:hidden; transition:border-color .2s,transform .2s; }
+    .d2-kpi-card:hover { border-color:rgba(255,255,255,0.16); transform:translateY(-2px); }
+    .d2-kpi-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--kc,#6366f1); border-radius:16px 16px 0 0; }
+    .d2-kpi-glyph { position:absolute; right:14px; top:16px; font-size:28px; opacity:0.08; line-height:1; pointer-events:none; }
+    .d2-kpi-label { font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:6px; }
+    .d2-kpi-num { font-size:2.4rem; font-weight:900; letter-spacing:-2px; color:var(--text); line-height:1; margin-bottom:5px; }
+    .d2-kpi-sub { font-size:11px; color:var(--text-muted); }
+    /* ② Layout grids */
+    #dashboard-root { display:flex; flex-direction:column; gap:16px; }
+    .d2-grid { display:grid; grid-template-columns:1fr 272px; gap:16px; }
+    @media(max-width:900px) { .d2-grid { grid-template-columns:1fr; } }
+    .d2-sym { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    @media(max-width:680px) { .d2-sym { grid-template-columns:1fr; } }
+    /* ③ Cards */
+    .d2-card { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:20px; padding:20px; }
+    .d2-card-hd { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+    .d2-card-hd-l { display:flex; align-items:center; gap:7px; font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em; }
+    .d2-divider { border:none; border-top:1px solid rgba(255,255,255,0.07); margin:14px 0; }
+    /* ④ Level */
+    .d2-lv-row { display:flex; align-items:center; gap:16px; }
+    .d2-lv-badge { width:56px; height:56px; border-radius:16px; background:linear-gradient(135deg,#6366f1,#8b5cf6); display:flex; flex-direction:column; align-items:center; justify-content:center; box-shadow:0 6px 24px rgba(99,102,241,0.3); flex-shrink:0; }
+    .d2-lv-badge-text { font-size:8px; font-weight:800; color:rgba(255,255,255,0.65); letter-spacing:0.15em; }
+    .d2-lv-badge-num { font-size:24px; font-weight:900; color:#fff; line-height:1; letter-spacing:-1px; }
+    .d2-lv-info { flex:1; min-width:0; }
+    .d2-lv-xp { font-size:1.4rem; font-weight:800; color:var(--text); letter-spacing:-0.5px; margin-bottom:3px; }
+    .d2-lv-next { font-size:11px; color:var(--text-muted); margin-bottom:9px; }
+    .d2-xp-bar { height:6px; background:rgba(255,255,255,0.1); border-radius:3px; overflow:hidden; }
+    .d2-xp-fill { height:100%; background:linear-gradient(90deg,#818cf8,#c084fc); border-radius:3px; transition:width .6s ease; }
+    /* ⑤ Streak chips */
+    .d2-chips { display:flex; gap:5px; flex-wrap:wrap; margin-top:14px; }
+    .d2-chip { display:inline-flex; align-items:center; gap:4px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:20px; padding:3px 10px; font-size:11px; font-weight:600; color:var(--text-muted); white-space:nowrap; }
+    /* ⑥ Skills */
+    .d2-skill-row { display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05); }
+    .d2-skill-row:last-child { border-bottom:none; padding-bottom:0; }
+    .d2-skill-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+    .d2-skill-name { font-size:12px; font-weight:600; color:var(--text); flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .d2-skill-bar { flex:0 0 72px; height:4px; background:rgba(255,255,255,0.08); border-radius:2px; overflow:hidden; }
+    .d2-skill-fill { height:100%; border-radius:2px; }
+    .d2-skill-lv { font-size:10px; font-weight:800; min-width:26px; text-align:right; flex-shrink:0; }
+    /* ⑦ Kanban mini */
+    .d2-kb { display:grid; grid-template-columns:repeat(auto-fit,minmax(52px,1fr)); gap:8px; margin-top:10px; }
+    .d2-kb-col { text-align:center; padding:10px 6px; background:rgba(255,255,255,0.03); border-radius:10px; border:1px solid rgba(255,255,255,0.06); }
+    .d2-kb-num { font-size:22px; font-weight:900; letter-spacing:-1px; line-height:1; margin-bottom:3px; }
+    .d2-kb-label { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; }
+    /* ⑧ Mood / Diary in sym grid */
+    .d2-mood-legend { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+    .d2-mood-leg-item { display:flex; align-items:center; gap:3px; font-size:10px; color:var(--text-muted); }
+
+    /* ── MORNING HERO HEADER ─────────────────────────────────────── */
+    .dash-morning {
+      background:linear-gradient(135deg,#0d0f1f 0%,#1a1040 50%,#0d0f1f 100%);
+      border:1px solid rgba(99,102,241,0.22); border-radius:20px;
+      padding:22px 24px; display:flex; align-items:center;
+      justify-content:space-between; overflow:hidden; position:relative; gap:16px;
+    }
+    .dm-orb1 { position:absolute;width:160px;height:160px;border-radius:50%;
+               background:radial-gradient(circle,rgba(99,102,241,0.18) 0%,transparent 70%);
+               top:-40px;left:-20px;pointer-events:none; }
+    .dm-orb2 { position:absolute;width:100px;height:100px;border-radius:50%;
+               background:radial-gradient(circle,rgba(139,92,246,0.14) 0%,transparent 70%);
+               bottom:-20px;right:80px;pointer-events:none; }
+    .dm-left { position:relative;z-index:1; }
+    .dm-eyebrow { font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;
+                  color:#818cf8;margin-bottom:5px; }
+    .dm-name { font-size:26px;font-weight:900;letter-spacing:-1px;margin-bottom:3px;
+               background:linear-gradient(90deg,#fff 0%,rgba(255,255,255,0.75) 100%);
+               -webkit-background-clip:text;-webkit-text-fill-color:transparent; }
+    .dm-date { font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:12px; }
+    .dm-chips { display:flex;gap:7px;flex-wrap:wrap; }
+    .dm-chip { font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px;
+               background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.65);
+               border:1px solid rgba(255,255,255,0.1); }
+    .dm-chip.hot { background:rgba(245,158,11,0.15);color:#fbbf24;border-color:rgba(245,158,11,0.3); }
+    .dm-chip.good { background:rgba(16,185,129,0.15);color:#34d399;border-color:rgba(16,185,129,0.3); }
+    .dm-ring-wrap { position:relative;width:86px;height:86px;flex-shrink:0;z-index:1; }
+    .dm-ring-inner { position:absolute;inset:0;display:flex;flex-direction:column;
+                     align-items:center;justify-content:center;gap:1px; }
+    .dm-ring-pct { font-size:21px;font-weight:900;color:#fff;line-height:1; }
+    .dm-ring-label { font-size:9px;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:0.05em; }
+
+    /* ── POMODORO + FOCUS SIDE-BY-SIDE ─────────────────────────────── */
+    .dash-pom-focus { display:grid;grid-template-columns:1fr 1fr;gap:16px; }
+    @media(max-width:620px) { .dash-pom-focus { grid-template-columns:1fr; } }
+
+    /* ── FOCUS HERO CARD (used in BOTH dashboard and quest tab) ─────── */
+    .focus-hero { border:1px solid rgba(99,102,241,0.22);border-radius:20px;overflow:hidden; }
+    .focus-hero-gradient { background:linear-gradient(135deg,rgba(99,102,241,0.12) 0%,rgba(139,92,246,0.08) 100%);
+                           padding:18px 18px 12px; }
+    .focus-hero-hd { display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;gap:10px; }
+    .focus-hero-eyebrow { font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;
+                          color:#818cf8;margin-bottom:3px; }
+    .focus-hero-title { font-size:17px;font-weight:900;letter-spacing:-0.5px;margin-bottom:3px; }
+    .focus-hero-sub { font-size:11px;color:var(--text-muted); }
+    .focus-hero-right { display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0; }
+    .focus-prog-dots { display:flex;gap:5px;align-items:center; }
+    .fpd { display:inline-block;width:12px;height:12px;border-radius:3px;transition:all .3s;flex-shrink:0; }
+    .fpd.done { background:#10b981;box-shadow:0 0 7px rgba(16,185,129,0.55); }
+    .fpd.next { background:rgba(99,102,241,0.45);border:1.5px solid #6366f1; }
+    .fpd.fpd-empty { background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.12); }
+    .focus-prog-label { font-size:10px;font-weight:700;color:var(--text-muted); }
+    .focus-reroll-btn { font-size:10px;font-weight:600;color:var(--text-muted);cursor:pointer;
+                        padding:3px 9px;border-radius:8px;border:1px solid var(--border);background:transparent;
+                        transition:all .15s;white-space:nowrap; }
+    .focus-reroll-btn:hover { border-color:#818cf8;color:#818cf8; }
+
+    /* ── BIG QUEST ITEM CARD ── */
+    .qf-items { display:flex;flex-direction:column;gap:7px; }
+    .qf-item { display:flex;align-items:center;gap:12px;padding:12px 14px;
+               border-radius:12px;background:rgba(255,255,255,0.035);
+               border:1px solid rgba(255,255,255,0.07);transition:all .15s; }
+    .qf-item:hover { background:rgba(255,255,255,0.065);border-color:rgba(255,255,255,0.12); }
+    .qf-item.done { opacity:0.4; }
+    .qf-check { width:28px;height:28px;border-radius:8px;border:2px solid rgba(255,255,255,0.18);
+                background:transparent;cursor:pointer;flex-shrink:0;
+                display:flex;align-items:center;justify-content:center;transition:all .15px; }
+    .qf-check:hover { border-color:#6366f1;background:rgba(99,102,241,0.14); }
+    .qf-item.done .qf-check { background:#10b981;border-color:#10b981; }
+    .qf-body { flex:1;min-width:0; }
+    .qf-title { font-size:13px;font-weight:600;margin-bottom:4px;
+                white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+    .qf-item.done .qf-title { text-decoration:line-through; }
+    .qf-skill { display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;
+                padding:2px 8px;border-radius:6px; }
+    .qf-xp { font-size:13px;font-weight:800;color:#f59e0b;flex-shrink:0; }
+    .focus-hero-footer { padding:10px 18px 14px;border-top:1px solid rgba(255,255,255,0.06);
+                         display:flex;align-items:center;justify-content:space-between; }
+    .focus-xp-total { display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;
+                      color:#f59e0b; }
+    .focus-see-all { font-size:11px;color:var(--text-muted);cursor:pointer;transition:color .15s; }
+    .focus-see-all:hover { color:#818cf8; }
+    /* all-done state */
+    .focus-done-banner { background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(5,150,105,0.15));
+                         border:1px solid rgba(16,185,129,0.3);border-radius:12px;padding:14px 16px;
+                         text-align:center;font-size:14px;font-weight:700;color:#34d399;
+                         margin-top:8px; }
+
+    /* ── HABIT QUICK PILLS ─────────────────────────────────────────── */
+    .dhq-wrap { padding:16px 20px;border-radius:16px;background:rgba(255,255,255,0.025);
+                border:1px solid rgba(255,255,255,0.07); }
+    .dhq-label { font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;
+                 color:var(--text-muted);margin-bottom:10px; }
+    .dhq-row { display:flex;flex-wrap:wrap;gap:7px; }
+    .dhq-pill { display:flex;align-items:center;gap:7px;padding:7px 14px;border-radius:20px;
+                font-size:12px;font-weight:600;cursor:pointer;transition:all .18s;user-select:none;
+                border:1.5px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04); }
+    .dhq-pill:hover { background:rgba(255,255,255,0.09);border-color:rgba(255,255,255,0.2); }
+    .dhq-pill.done { opacity:0.45;border-style:dashed; }
+    .dhq-dot { width:8px;height:8px;border-radius:50%;flex-shrink:0; }
+    .dhq-pill.done .dhq-name { text-decoration:line-through; }
+    .dhq-ck { font-size:11px;line-height:1; }
+
+    /* ── DEADLINE ALERTS ──────────────────────────────────────────── */
+    .dash-alerts { display:flex;flex-direction:column;gap:7px; }
+    .dash-alert { display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;
+                  font-size:12px;font-weight:500; }
+    .dash-alert.warn { background:rgba(245,158,11,0.09);border:1px solid rgba(245,158,11,0.25);color:#fbbf24; }
+    .dash-alert.danger { background:rgba(239,68,68,0.09);border:1px solid rgba(239,68,68,0.25);color:#f87171; }
+    .dash-alert-icon { font-size:14px;flex-shrink:0; }
+    .dash-alert-text { flex:1; }
+    .dash-alert-due { font-size:10px;opacity:0.7;margin-top:1px; }
+
+    /* ── DASHBOARD QUEST FOCUS WIDGET ────────────────────────────── */
+    .d2-quest-hd { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+    .d2-quest-hd-l { display:flex; align-items:center; gap:7px; font-size:10px; font-weight:700;
+                     text-transform:uppercase; letter-spacing:0.1em; color:var(--text-muted); }
+    .d2-quest-pill { font-size:9px; font-weight:800; padding:2px 8px; border-radius:20px;
+                     background:rgba(99,102,241,0.18); color:#818cf8; border:1px solid rgba(99,102,241,0.3); }
+    .d2-quest-done-pill { background:rgba(16,185,129,0.18); color:#34d399; border-color:rgba(16,185,129,0.35); }
+    .d2-quest-reroll { font-size:10px; font-weight:600; color:var(--text-muted); cursor:pointer;
+                       padding:3px 8px; border-radius:8px; border:1px solid var(--border); background:transparent;
+                       transition:var(--transition); }
+    .d2-quest-reroll:hover { border-color:#818cf8; color:#818cf8; }
+    .d2-focus-list { display:flex; flex-direction:column; gap:7px; }
+    .d2-focus-item { display:flex; align-items:center; gap:10px; padding:8px 10px;
+                     border-radius:10px; background:rgba(255,255,255,0.035);
+                     border:1px solid rgba(255,255,255,0.06); transition:background .15s,border-color .15s; }
+    .d2-focus-item:hover { background:rgba(255,255,255,0.055); border-color:rgba(255,255,255,0.1); }
+    .d2-focus-item.done { opacity:0.4; }
+    .d2-focus-check { width:22px; height:22px; border-radius:7px; border:1.5px solid var(--border2);
+                      background:transparent; cursor:pointer; flex-shrink:0; display:flex;
+                      align-items:center; justify-content:center; transition:all .15s; }
+    .d2-focus-check:hover { border-color:#6366f1; background:rgba(99,102,241,0.12); }
+    .d2-focus-item.done .d2-focus-check { background:#10b981; border-color:#10b981; }
+    .d2-focus-body { flex:1; min-width:0; }
+    .d2-focus-title { font-size:12px; font-weight:500; color:var(--text); white-space:nowrap;
+                      overflow:hidden; text-overflow:ellipsis; }
+    .d2-focus-item.done .d2-focus-title { text-decoration:line-through; }
+    .d2-focus-tag { display:inline-flex; align-items:center; gap:3px; font-size:9px;
+                    font-weight:600; padding:1px 6px; border-radius:5px; margin-top:3px; }
+    .d2-focus-xp { font-size:10px; font-weight:700; color:#f59e0b; flex-shrink:0; }
+    .d2-quest-all-link { display:block; text-align:center; margin-top:10px; font-size:11px;
+                         color:var(--text-muted); cursor:pointer; padding:5px;
+                         border-radius:8px; transition:color .15s; }
+    .d2-quest-all-link:hover { color:#818cf8; }
+
+    /* ── ENHANCED XP POPUP ──────────────────────────────────────── */
+    @keyframes xp-pop-big {
+      0%   { opacity:0; transform:translateY(0) scale(0.6); }
+      25%  { opacity:1; transform:translateY(-24px) scale(1.2); }
+      60%  { opacity:1; transform:translateY(-38px) scale(1.05); }
+      100% { opacity:0; transform:translateY(-56px) scale(1); }
+    }
+    @keyframes xp-particle {
+      0%   { opacity:1; transform:translate(0,0) scale(1); }
+      100% { opacity:0; transform:var(--tx,0) var(--ty,0) scale(0.2); }
+    }
+    .xp-popup-v2 {
+      position:fixed; pointer-events:none; z-index:9999;
+      display:flex; flex-direction:column; align-items:center; gap:1px;
+      animation:xp-pop-big 1.4s cubic-bezier(.17,.67,.55,1.2) forwards;
+    }
+    .xp-popup-v2 .xp-num { font-size:18px; font-weight:900; letter-spacing:-0.5px;
+                            text-shadow:0 2px 12px var(--xp-c,#f59e0b); color:var(--xp-c,#f59e0b); }
+    .xp-popup-v2 .xp-skill { font-size:9px; font-weight:700; color:rgba(255,255,255,0.6);
+                              text-transform:uppercase; letter-spacing:0.08em; }
+    .xp-particle { position:fixed; pointer-events:none; z-index:9998;
+                   width:5px; height:5px; border-radius:50%;
+                   animation:xp-particle 0.8s ease-out forwards; }
+    @keyframes focus-complete-flash {
+      0%   { opacity:0; transform:scale(0.8); }
+      20%  { opacity:1; transform:scale(1.05); }
+      80%  { opacity:1; transform:scale(1); }
+      100% { opacity:0; transform:scale(1); }
+    }
+    .focus-complete-banner {
+      position:fixed; bottom:100px; left:50%; transform:translateX(-50%);
+      z-index:9998; pointer-events:none;
+      background:linear-gradient(135deg,#059669,#0d9488);
+      color:#fff; font-size:14px; font-weight:800; padding:12px 28px;
+      border-radius:20px; box-shadow:0 8px 32px rgba(5,150,105,0.4);
+      animation:focus-complete-flash 2.5s ease forwards; white-space:nowrap;
+    }
+
+    /* mood trend */
+    .mood-timeline { display:flex; gap:3px; align-items:stretch; }
+    .mood-dot { flex:1; min-width:0; aspect-ratio:1/1; border-radius:4px; cursor:pointer; transition:transform .15s,filter .15s; }
+    .mood-dot:hover { transform:scale(1.45); filter:brightness(1.2); z-index:1; position:relative; }
+    .mood-freq-grid { display:flex; flex-direction:column; gap:6px; }
+    .mood-freq-row { display:grid; grid-template-columns:18px 54px 1fr 30px; align-items:center; gap:6px; }
+    .mood-freq-emoji { font-size:12px; text-align:center; line-height:1; }
+    .mood-freq-label { font-size:11px; color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .mood-freq-bar-bg { height:6px; background:var(--border); border-radius:4px; overflow:hidden; }
+    .mood-freq-bar-fill { height:100%; border-radius:4px; transition:width .4s ease; }
+    .mood-freq-count { font-size:11px; font-weight:700; text-align:right; white-space:nowrap; }
 
     /* ─── PROJECTS SECTION ─── */
     .work-projects-section { margin-bottom: 24px; }
@@ -2163,7 +2445,7 @@
     .quest-challenge-complete:hover { border-color: #f59e0b; color: #f59e0b; background: #f59e0b18; }
     .quest-challenge.done .quest-challenge-complete { pointer-events: none; }
 
-    /* XP popup animation */
+    /* XP popup animation (legacy kept for compat) */
     @keyframes xp-pop {
       0% { opacity: 0; transform: translateY(0) scale(0.8); }
       30% { opacity: 1; transform: translateY(-20px) scale(1.1); }
@@ -2266,35 +2548,41 @@
     }
     .heatmap-legend .heatmap-cell { width: 10px; height: 10px; }
 
-    /* ── POMODORO TIMER ── */
+    /* ── POMODORO TIMER (縦中央レイアウト) ── */
     .pom-card {
       background: var(--surface); border: 1px solid var(--border);
-      border-radius: 16px; padding: 18px 20px 16px;
-      margin-bottom: 14px; display: flex; flex-direction: column; gap: 14px;
+      border-radius: 20px; padding: 18px 20px 16px;
+      display: flex; flex-direction: column; gap: 0;
+      height: 100%; box-sizing: border-box;
     }
-    /* 上段：リング + メインコントロール */
-    .pom-top { display: flex; align-items: center; gap: 18px; }
-    .pom-ring-wrap { position: relative; flex-shrink: 0; width: 84px; height: 84px; }
-    .pom-ring-svg { width: 84px; height: 84px; transform: rotate(-90deg); }
+    .pom-label { font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: .06em; margin-bottom: 4px; }
+    .pom-session-row { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+    /* リングセクション：縦方向で余白を埋める */
+    .pom-ring-section {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 10px;
+    }
+    .pom-ring-wrap { position: relative; flex-shrink: 0; width: 140px; height: 140px; }
+    .pom-ring-svg { width: 140px; height: 140px; transform: rotate(-90deg); }
     .pom-ring-inner {
       position: absolute; inset: 0;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
     }
-    .pom-time { font-size: 20px; font-weight: 800; letter-spacing: -1px; line-height: 1; }
-    .pom-mode-label { font-size: 9px; color: var(--text-muted); font-weight: 600; letter-spacing: .04em; }
-    .pom-right { flex: 1; display: flex; flex-direction: column; gap: 10px; }
-    .pom-session-row { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+    .pom-time { font-size: 32px; font-weight: 800; letter-spacing: -2px; line-height: 1; }
+    .pom-mode-label { font-size: 12px; color: var(--text-muted); font-weight: 600; letter-spacing: .04em; }
+    /* コントロールボタン */
+    .pom-controls { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
     .pom-btn-main {
-      width: 100%; padding: 9px;
-      border: none; border-radius: 10px; color: #fff;
-      font-size: 13px; font-weight: 700; cursor: pointer;
+      width: 100%; padding: 13px;
+      border: none; border-radius: 12px; color: #fff;
+      font-size: 15px; font-weight: 700; cursor: pointer;
       transition: opacity 0.15s, transform 0.1s;
     }
     .pom-btn-main:hover { opacity: 0.85; transform: translateY(-1px); }
     .pom-btn-main:active { transform: scale(0.97); }
-    .pom-sub-row { display: flex; gap: 6px; }
+    .pom-sub-row { display: flex; gap: 8px; }
     .pom-btn-sub {
-      flex: 1; height: 30px; border-radius: 8px;
+      flex: 1; height: 34px; border-radius: 10px;
       background: var(--surface2); border: 1px solid var(--border2);
       color: var(--text-muted); font-size: 13px; cursor: pointer;
       transition: var(--transition);
@@ -2302,7 +2590,7 @@
     .pom-btn-sub:hover { border-color: var(--accent); color: var(--accent); }
     /* 下段：インラインタイム調整 */
     .pom-time-row {
-      display: flex; gap: 8px; padding-top: 12px;
+      display: flex; gap: 8px; padding-top: 14px;
       border-top: 1px solid var(--border);
     }
     .pom-time-block {
@@ -2316,16 +2604,16 @@
     }
     .pom-time-block-inner { display: flex; align-items: center; gap: 6px; }
     .pom-adj {
-      width: 24px; height: 24px; border-radius: 6px;
+      width: 26px; height: 26px; border-radius: 7px;
       background: var(--surface); border: 1px solid var(--border2);
-      color: var(--text); font-size: 14px; font-weight: 700; cursor: pointer;
+      color: var(--text); font-size: 15px; font-weight: 700; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       transition: var(--transition); flex-shrink: 0;
     }
     .pom-adj:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
     .pom-adj:active { transform: scale(0.92); }
     .pom-min-val {
-      font-size: 16px; font-weight: 800; min-width: 26px;
+      font-size: 18px; font-weight: 800; min-width: 28px;
       text-align: center; color: var(--text);
     }
     @media (max-width: 480px) {
@@ -2834,20 +3122,31 @@
   .news-daily-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: #e85d26; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
   .news-daily-text { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.7; color: var(--text); font-weight: 300; }
   /* Briefing grid */
-  .briefing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+  .briefing-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; margin-bottom: 14px; }
   @media (max-width: 640px) { .briefing-grid { grid-template-columns: 1fr; } }
-  .briefing-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 6px; padding: 10px 12px; }
-  .briefing-item-head { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; }
-  .briefing-cat { font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; }
+  .briefing-item { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09); border-top: 2.5px solid var(--bc,rgba(255,255,255,0.2)); border-radius: 8px; padding: 13px 14px; transition: background .15s; }
+  .briefing-item:hover { background: rgba(255,255,255,0.07); }
+  .briefing-item-head { display: flex; align-items: center; gap: 7px; margin-bottom: 8px; }
+  .briefing-cat { font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 700; }
   .briefing-cat.tech    { color: #3b82f6; }
   .briefing-cat.sns     { color: #ec4899; }
   .briefing-cat.biz     { color: #10b981; }
   .briefing-cat.culture { color: #a855f7; }
   .briefing-cat.ent     { color: #f59e0b; }
-  .briefing-tagline { font-size: 12px; color: var(--text-sub); font-family: 'Plus Jakarta Sans', sans-serif; line-height: 1.45; }
-  .briefing-headline { font-size: 11px; color: var(--text-muted); margin-top: 3px; font-family: 'IBM Plex Mono', monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .briefing-insight { font-family: 'Newsreader', serif; font-size: 13px; color: var(--text-sub); border-top: 1px solid rgba(232,93,38,0.15); padding-top: 9px; line-height: 1.6; font-style: italic; }
-  .briefing-insight strong { font-style: normal; color: #e85d26; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.1em; text-transform: uppercase; vertical-align: middle; margin-right: 4px; }
+  .briefing-count { margin-left: auto; font-size: 10px; color: var(--text-muted); font-family: 'IBM Plex Mono', monospace; }
+  .briefing-tagline { font-size: 13px; color: var(--text); font-weight: 600; line-height: 1.45; margin-bottom: 6px; }
+  .briefing-headline { font-size: 11px; color: var(--text-muted); line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .briefing-insight { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; border-top: 1px solid rgba(232,93,38,0.18); padding-top: 12px; }
+  .briefing-insight-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; color: #e85d26; letter-spacing: 0.15em; text-transform: uppercase; }
+  .briefing-insight-chip { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 3px 10px; font-size: 11px; color: var(--text-muted); white-space: nowrap; font-family: 'Plus Jakarta Sans', sans-serif; }
+  .briefing-insight-total { margin-left: auto; font-size: 10px; color: var(--text-muted); font-family: 'IBM Plex Mono', monospace; }
+  /* Category thumbnail for news cards */
+  .news-cat-thumb { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  .news-cat-thumb::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg,transparent,transparent 18px,rgba(255,255,255,0.02) 18px,rgba(255,255,255,0.02) 19px); }
+  .nct-emoji { font-size: 2.4rem; line-height: 1; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5)); position: relative; z-index: 1; }
+  .news-card.hero .nct-emoji { font-size: 3.6rem; }
+  .news-card.featured .nct-emoji { font-size: 3rem; }
+  .news-card.compact .nct-emoji { font-size: 1.8rem; }
   .news-refresh-btn { font-family: 'IBM Plex Mono', monospace; background:none; border:1px solid rgba(232,93,38,0.3); color:#e85d26; border-radius:2px; padding:3px 10px; font-size:9px; letter-spacing: 0.1em; cursor:pointer; transition:all 0.2s; text-transform: uppercase; }
   .news-refresh-btn:hover { background: rgba(232,93,38,0.1); }
   .news-no-results { grid-column: 1/-1; text-align: center; padding: 60px 20px; color: var(--text-muted); font-family: 'IBM Plex Mono', monospace; font-size: 12px; }
@@ -3151,6 +3450,168 @@
     /* ── ロードマップ ── */
     .rm-header-sticky { top: 56px; }
   }
+
+  /* ── NOTION DIARY SYSTEM ── */
+  .diary-view-toggle { display:flex; gap:2px; background:var(--surface-2); border-radius:8px; padding:3px; }
+  .diary-view-btn { background:transparent; border:none; padding:5px 10px; border-radius:6px; font-size:12px; color:var(--text-muted); cursor:pointer; white-space:nowrap; transition:all .15s; }
+  .diary-view-btn:hover { color:var(--text); background:var(--surface-3); }
+  .diary-view-btn.active { background:var(--surface); color:var(--text); font-weight:600; box-shadow:0 1px 3px rgba(0,0,0,.15); }
+  /* Add diary dropdown */
+  .diary-add-wrap { position:relative; }
+  .diary-add-menu { position:absolute; top:calc(100% + 6px); right:0; background:var(--surface); border:1px solid var(--border2); border-radius:10px; box-shadow:0 10px 36px rgba(0,0,0,0.55); z-index:300; min-width:182px; overflow:hidden; animation:fadeInDown .12s ease; }
+  @keyframes fadeInDown { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
+  .diary-add-menu-item { display:flex; align-items:center; gap:9px; width:100%; padding:11px 14px; background:none; border:none; text-align:left; cursor:pointer; font-size:13px; color:var(--text); transition:background .12s; font-family:inherit; }
+  .diary-add-menu-item:hover { background:var(--surface2); }
+  .diary-add-menu-item .dam-icon { font-size:16px; width:22px; text-align:center; flex-shrink:0; }
+  .diary-add-menu-item .dam-label { font-weight:600; }
+  .diary-add-menu-item .dam-sub { font-size:11px; color:var(--text-muted); }
+  /* Split editor topbar */
+  .split-editor-topbar { display:flex; align-items:center; gap:6px; margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid var(--border); }
+  .split-topbar-save { font-size:11px; color:var(--text-muted); flex:1; opacity:0.6; }
+  .split-topbar-btn { background:none; border:1px solid var(--border); border-radius:6px; padding:4px 10px; font-size:11px; color:var(--text-muted); cursor:pointer; transition:all .12s; white-space:nowrap; }
+  .split-topbar-btn:hover { background:var(--surface2); color:var(--text); }
+  .split-topbar-btn.danger:hover { background:rgba(239,68,68,0.12); border-color:rgba(239,68,68,0.35); color:#ef4444; }
+
+  /* Full-page overlay */
+  .notion-page-overlay { position:fixed; inset:0; z-index:500; background:var(--bg); overflow-y:auto; animation:slideUpIn .22s cubic-bezier(.16,1,.3,1); }
+  @keyframes slideUpIn { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+  .notion-page-topbar { position:sticky; top:0; z-index:10; display:flex; align-items:center; gap:12px; padding:12px 24px; background:var(--bg); border-bottom:1px solid var(--border); backdrop-filter:blur(8px); }
+  .notion-page-back { display:flex; align-items:center; gap:6px; background:transparent; border:none; color:var(--text-muted); cursor:pointer; font-size:13px; padding:6px 10px; border-radius:6px; transition:all .15s; }
+  .notion-page-back:hover { background:var(--surface-2); color:var(--text); }
+  .notion-page-save { background:var(--accent-daily); color:#fff; border:none; padding:7px 18px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; transition:opacity .15s; }
+  .notion-page-save:hover { opacity:.85; }
+  .notion-page-body { max-width:860px; margin:0 auto; padding:40px 48px 80px; }
+  .notion-page-title { width:100%; border:none; outline:none; background:transparent; font-size:2.2em; font-weight:700; color:var(--text); font-family:inherit; padding:0; margin-bottom:20px; line-height:1.2; display:block; }
+  .notion-page-title::placeholder { color:var(--text-muted); opacity:.5; }
+  .notion-section-label { display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:4px 10px; border-radius:20px; margin-bottom:10px; }
+  .notion-section-label.morning { background:rgba(251,191,36,.15); color:#d97706; }
+  .notion-section-label.night { background:rgba(99,102,241,.12); color:#6366f1; }
+  .notion-editor-ce { min-height:200px; font-size:15px; line-height:1.75; color:var(--text); outline:none; padding:4px 0 16px; }
+  .notion-editor-ce:empty::before { content:attr(data-placeholder); color:var(--text-muted); opacity:.5; pointer-events:none; }
+  .notion-editor-ce h1 { font-size:1.6em; font-weight:700; margin:.5em 0 .2em; }
+  .notion-editor-ce h2 { font-size:1.25em; font-weight:600; margin:.5em 0 .2em; }
+  .notion-editor-ce ul, .notion-editor-ce ol { padding-left:1.5em; margin:.3em 0; }
+  .notion-editor-ce blockquote { border-left:3px solid var(--accent-daily); padding-left:12px; color:var(--text-muted); margin:.5em 0; }
+  .notion-editor-ce b, .notion-editor-ce strong { font-weight:700; }
+  .notion-editor-ce i, .notion-editor-ce em { font-style:italic; }
+  .notion-editor-ce s { text-decoration:line-through; }
+
+  /* Split view */
+  .diary-split-layout { display:grid; grid-template-columns:var(--diary-sidebar-w,260px) 5px 1fr; height:calc(100vh - 120px); overflow:hidden; border:1px solid var(--border); border-radius:12px; }
+  .diary-split-sidebar { border-right:none; overflow-y:auto; background:var(--surface); min-width:0; }
+  .diary-split-resizer { background:var(--border); cursor:col-resize; transition:background .15s; user-select:none; }
+  .diary-split-resizer:hover, .diary-split-resizer.dragging { background:#6366f1; }
+  .diary-split-entry { padding:10px 12px; border-bottom:1px solid var(--border); cursor:pointer; transition:background .12s; }
+  .diary-split-entry:hover { background:var(--surface-2); }
+  .diary-split-entry.active { background:rgba(99,102,241,.08); border-left:3px solid #6366f1; padding-left:9px; }
+  .ds-entry-row { display:flex; gap:10px; align-items:flex-start; }
+  .ds-date-block { display:flex; flex-direction:column; align-items:center; justify-content:center; min-width:34px; width:34px; padding:5px 0; background:rgba(99,102,241,0.1); border-radius:7px; flex-shrink:0; }
+  .diary-split-entry.active .ds-date-block { background:rgba(99,102,241,0.2); }
+  .ds-day { font-size:17px; font-weight:800; line-height:1; color:var(--text); }
+  .ds-weekday { font-size:8px; color:var(--text-muted); margin-top:1px; }
+  .ds-month { font-size:8px; color:var(--text-muted); }
+  .ds-content { flex:1; min-width:0; }
+  .diary-split-entry-title { font-size:12px; font-weight:600; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:2px; }
+  .diary-split-entry-preview { font-size:11px; color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .ds-footer { display:flex; align-items:center; gap:5px; margin-top:4px; flex-wrap:wrap; }
+  .ds-mood { font-size:10px; color:var(--text-muted); }
+  .ds-day-badge { font-size:9px; font-weight:700; letter-spacing:.05em; background:rgba(99,102,241,.12); color:#6366f1; padding:1px 5px; border-radius:10px; }
+  .diary-split-main { overflow-y:auto; background:var(--bg); min-width:0; }
+  .diary-split-editor { padding:32px 36px 60px; max-width:700px; margin:0 auto; }
+
+  /* Floating toolbar */
+  .notion-float-toolbar { position:fixed; z-index:600; display:flex; align-items:center; gap:2px; background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:4px 6px; box-shadow:0 4px 16px rgba(0,0,0,.18); pointer-events:auto; }
+  .nft-btn { background:transparent; border:none; padding:4px 8px; border-radius:5px; font-size:13px; color:var(--text); cursor:pointer; white-space:nowrap; transition:background .12s; }
+  .nft-btn:hover { background:var(--surface-2); }
+  .nft-sep { width:1px; height:16px; background:var(--border); margin:0 3px; }
+
+  /* Slash menu */
+  .slash-menu { position:fixed; z-index:700; background:var(--surface); border:1px solid var(--border); border-radius:10px; box-shadow:0 8px 32px rgba(0,0,0,.2); min-width:200px; overflow:hidden; }
+  .slash-menu-item { display:flex; align-items:center; gap:10px; padding:8px 12px; cursor:pointer; transition:background .1s; }
+  .slash-menu-item:hover, .slash-menu-item.active { background:rgba(99,102,241,.1); }
+  .slash-menu-icon { width:28px; height:28px; display:flex; align-items:center; justify-content:center; background:var(--surface-2); border-radius:6px; font-size:13px; font-weight:700; flex-shrink:0; }
+  .slash-menu-label { font-size:13px; font-weight:600; color:var(--text); }
+  .slash-menu-desc { font-size:11px; color:var(--text-muted); }
+
+  /* ─── QUEST SIDE PANEL ─── */
+  .quest-panel-fab {
+    position:fixed; bottom:24px; right:24px; z-index:1200;
+    width:50px; height:50px; border-radius:50%;
+    background:linear-gradient(135deg,#6366f1,#8b5cf6);
+    border:none; cursor:pointer; display:flex; align-items:center; justify-content:center;
+    font-size:20px; box-shadow:0 4px 20px rgba(99,102,241,0.55);
+    transition:transform .2s, box-shadow .2s; user-select:none;
+  }
+  .quest-panel-fab:hover { transform:scale(1.1); box-shadow:0 6px 28px rgba(99,102,241,0.75); }
+  .quest-panel-fab.panel-open { background:linear-gradient(135deg,#4f46e5,#7c3aed); box-shadow:0 4px 16px rgba(99,102,241,.6); transform:scale(1.05); }
+  .quest-panel-overlay { display:none; } /* オーバーレイなし・背景操作を維持 */
+  .quest-side-panel {
+    position:fixed; top:0; right:0; height:100dvh; width:300px;
+    background:#10101e;
+    border-left:1px solid rgba(99,102,241,0.25);
+    z-index:500; display:flex; flex-direction:column;
+    transform:translateX(105%); transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:-8px 0 32px rgba(0,0,0,.55);
+  }
+  .quest-side-panel.open { transform:translateX(0); }
+  .qsp-header {
+    display:flex; align-items:center; padding:14px 16px;
+    border-bottom:1px solid rgba(255,255,255,.08); flex-shrink:0;
+    background:linear-gradient(135deg,rgba(99,102,241,.18),rgba(139,92,246,.1));
+  }
+  .qsp-title { flex:1; font-size:14px; font-weight:800; color:var(--text); display:flex; align-items:center; gap:8px; }
+  .qsp-close { background:none; border:none; cursor:pointer; color:var(--text-muted); font-size:18px; padding:4px 6px; border-radius:6px; transition:background .12s; }
+  .qsp-close:hover { background:var(--surface2); color:var(--text); }
+  .qsp-xp-wrap { padding:10px 16px 12px; border-bottom:1px solid rgba(255,255,255,.08); flex-shrink:0; }
+  .qsp-lv-row { display:flex; align-items:baseline; gap:6px; margin-bottom:6px; }
+  .qsp-lv-num { font-size:22px; font-weight:900; color:var(--text); }
+  .qsp-lv-sub { font-size:11px; color:var(--text-muted); }
+  .qsp-cls-name { font-size:11px; font-weight:700; color:#6366f1; margin-left:auto; }
+  .qsp-xp-bar { height:5px; background:var(--border); border-radius:3px; overflow:hidden; }
+  .qsp-xp-fill { height:100%; border-radius:3px; background:linear-gradient(90deg,#6366f1,#8b5cf6); transition:width .6s ease; }
+  .qsp-xp-text { font-size:10px; color:var(--text-muted); margin-top:3px; text-align:right; }
+  .qsp-body { flex:1; overflow-y:auto; padding:8px 10px 0; }
+  .qsp-sec { font-size:9px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--text-muted); margin:10px 4px 5px; }
+  .qsp-item {
+    display:flex; align-items:center; gap:8px; padding:8px 10px; border-radius:8px;
+    margin-bottom:4px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08);
+    transition:background .1s; position:relative;
+  }
+  .qsp-item:hover { background:rgba(255,255,255,.09); }
+  .qsp-item.done { opacity:.5; }
+  .qsp-check {
+    width:20px; height:20px; border-radius:5px; flex-shrink:0;
+    border:2px solid var(--border2); cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition:background .15s, border-color .15s; font-size:11px; font-weight:900;
+  }
+  .qsp-item.done .qsp-check { background:#10b981; border-color:#10b981; color:#fff; }
+  .qsp-item-info { flex:1; min-width:0; }
+  .qsp-item-title { font-size:12px; font-weight:500; color:var(--text); line-height:1.35; }
+  .qsp-item.done .qsp-item-title { text-decoration:line-through; color:var(--text-muted); }
+  .qsp-habit-link { font-size:9px; color:var(--text-muted); margin-top:2px; display:flex; align-items:center; gap:3px; }
+  .qsp-xp-badge { font-size:10px; font-weight:700; padding:2px 6px; border-radius:10px; flex-shrink:0; white-space:nowrap; }
+  .qsp-item-btns { display:none; gap:2px; }
+  .qsp-item:hover .qsp-item-btns { display:flex; }
+  .qsp-ibtn { background:none; border:none; cursor:pointer; padding:3px 5px; color:var(--text-muted); border-radius:4px; font-size:12px; transition:background .1s; }
+  .qsp-ibtn:hover { background:var(--surface); }
+  .qsp-ibtn.del:hover { color:#ef4444; }
+  .qsp-footer { border-top:1px solid rgba(255,255,255,.08); flex-shrink:0; padding:10px 10px 20px; }
+  .qsp-add-btn { width:100%; padding:9px; border-radius:8px; border:1px dashed rgba(255,255,255,.2); background:transparent; color:rgba(255,255,255,.5); cursor:pointer; font-size:13px; font-weight:600; transition:background .12s, color .12s, border-color .12s; }
+  .qsp-add-btn:hover { background:rgba(255,255,255,.07); color:#fff; border-color:#6366f1; }
+  .qsp-form { display:flex; flex-direction:column; gap:8px; }
+  .qspf-label { font-size:9px; font-weight:800; color:var(--text-muted); letter-spacing:.06em; text-transform:uppercase; margin-bottom:2px; }
+  .qspf-input { width:100%; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:7px; padding:8px 10px; font-size:13px; color:#fff; outline:none; font-family:inherit; box-sizing:border-box; }
+  .qspf-input:focus { border-color:#6366f1; background:rgba(255,255,255,.09); }
+  .qspf-select { width:100%; background:#1a1a2e; border:1px solid rgba(255,255,255,.12); border-radius:7px; padding:7px 10px; font-size:13px; color:#fff; outline:none; box-sizing:border-box; }
+  .qspf-select:focus { border-color:#6366f1; }
+  .qspf-xp-row { display:flex; gap:4px; }
+  .qspf-xp-opt { flex:1; padding:5px 2px; border:1px solid rgba(255,255,255,.12); border-radius:6px; background:rgba(255,255,255,.05); color:rgba(255,255,255,.5); font-size:11px; font-weight:700; cursor:pointer; text-align:center; transition:all .12s; }
+  .qspf-xp-opt.sel { background:#6366f1; border-color:#6366f1; color:#fff; }
+  .qspf-row-btns { display:flex; gap:6px; margin-top:2px; }
+  .qspf-save { flex:1; padding:8px; background:#6366f1; color:#fff; border:none; border-radius:7px; font-size:13px; font-weight:700; cursor:pointer; transition:background .12s; }
+  .qspf-save:hover { background:#4f46e5; }
+  .qspf-cancel { padding:8px 12px; background:rgba(255,255,255,.07); color:rgba(255,255,255,.5); border:1px solid rgba(255,255,255,.12); border-radius:7px; font-size:13px; cursor:pointer; }
   </style>
 </head>
 <body>
@@ -3244,7 +3705,25 @@
   <div id="tab-daily" style="--tab-color: var(--accent-daily)">
     <div class="section-header">
       <div class="section-title"><i data-lucide="book-open"></i>日記</div>
-      <button class="btn-add" onclick="openModal('daily')"><i data-lucide="plus"></i> 追加</button>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div class="diary-view-toggle" id="diary-view-toggle">
+          <button class="diary-view-btn active" data-mode="card" onclick="setDiaryViewMode('card')" title="カード表示">≡ カード</button>
+          <button class="diary-view-btn" data-mode="split" onclick="setDiaryViewMode('split')" title="サイドパネル">⊞ サイド</button>
+        </div>
+        <div class="diary-add-wrap">
+          <button class="btn-add" onclick="toggleDiaryAddMenu(event)"><i data-lucide="plus"></i> 追加 <span style="font-size:9px;margin-left:1px;opacity:0.7">▾</span></button>
+          <div id="diary-add-menu" class="diary-add-menu" style="display:none">
+            <button class="diary-add-menu-item" onclick="addDiaryEntry('split');closeDiaryAddMenu()">
+              <span class="dam-icon">⊞</span>
+              <span><div class="dam-label">サイドで書く</div><div class="dam-sub">一覧を見ながら執筆</div></span>
+            </button>
+            <button class="diary-add-menu-item" onclick="addDiaryEntry('full');closeDiaryAddMenu()">
+              <span class="dam-icon">⊙</span>
+              <span><div class="dam-label">フルページで書く</div><div class="dam-sub">集中して書きたいとき</div></span>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
     <p class="section-desc">今日あったこと、気づき、行動の記録。KRに紐づけることでビジョンとの距離がわかる。</p>
     <div class="diary-container" id="cards-daily"></div>
@@ -3307,55 +3786,51 @@
       </div>
     </div>
     <div class="rm-goals-header" style="display:flex;align-items:center;margin-bottom:8px">
-      <span style="font-size:11px;font-weight:600;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase">目標メモ</span>
+      <span style="font-size:11px;font-weight:600;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase">目標</span>
       <button class="rm-goals-toggle" id="rm-goals-toggle-btn" onclick="toggleRmGoals()" title="折りたたむ">
         <span class="toggle-icon">▾</span> 折りたたむ
       </button>
     </div>
-    <div class="rm-goals" id="rm-goals-wrap">
-      <div class="rm-goal-row" id="rmgrow-week">
-        <div class="rm-goal-row-header" onclick="toggleRmGoalRow('week')">
-          <span class="rm-goal-row-label"><i data-lucide="calendar" style="width:12px;height:12px"></i> 今週の目標</span>
-          <span class="rm-goal-row-chevron">▾</span>
-        </div>
-        <div class="rm-goal-row-body">
-          <textarea class="rm-goal-input" id="rmg-week" placeholder="今週達成したいこと..." rows="2" oninput="saveRmGoals()"></textarea>
-        </div>
+    <div class="rm-mission-board" id="rm-goals-wrap">
+      <!-- ⚡ Week Hero -->
+      <div class="rm-mission-hero">
+        <div class="rm-mission-hero-label">⚡ 今週の使命</div>
+        <textarea class="rm-mission-hero-ta" id="rmg-week" placeholder="今週達成したいこと…" rows="1"
+          oninput="saveRmGoals();rmAutoResize(this)"></textarea>
       </div>
-      <div class="rm-goal-row" id="rmgrow-month">
-        <div class="rm-goal-row-header" onclick="toggleRmGoalRow('month')">
-          <span class="rm-goal-row-label"><i data-lucide="calendar-days" style="width:12px;height:12px"></i> 今月の目標</span>
-          <span class="rm-goal-row-chevron">▾</span>
+      <!-- Horizon strip -->
+      <div class="rm-mission-horizons">
+        <div class="rm-horizon-card" id="rmhc-month" style="--hc:#0ea5e9" onclick="toggleRmHorizon('month')">
+          <div class="rm-horizon-label">📅 今月</div>
+          <div class="rm-horizon-preview empty" id="rmhp-month">未設定</div>
+          <div class="rm-horizon-ta-wrap">
+            <textarea class="rm-horizon-ta" id="rmg-month" rows="2" placeholder="今月の目標…"
+              onmousedown="event.stopPropagation()" onclick="event.stopPropagation()" oninput="saveRmGoals();updateRmHorizonPreview('month');rmAutoResize(this)"></textarea>
+          </div>
         </div>
-        <div class="rm-goal-row-body">
-          <textarea class="rm-goal-input" id="rmg-month" placeholder="今月達成したいこと..." rows="2" oninput="saveRmGoals()"></textarea>
+        <div class="rm-horizon-card" id="rmhc-quarter" style="--hc:#10b981" onclick="toggleRmHorizon('quarter')">
+          <div class="rm-horizon-label">🎯 3ヶ月</div>
+          <div class="rm-horizon-preview empty" id="rmhp-quarter">未設定</div>
+          <div class="rm-horizon-ta-wrap">
+            <textarea class="rm-horizon-ta" id="rmg-quarter" rows="2" placeholder="3ヶ月の目標…"
+              onmousedown="event.stopPropagation()" onclick="event.stopPropagation()" oninput="saveRmGoals();updateRmHorizonPreview('quarter');rmAutoResize(this)"></textarea>
+          </div>
         </div>
-      </div>
-      <div class="rm-goal-row" id="rmgrow-quarter">
-        <div class="rm-goal-row-header" onclick="toggleRmGoalRow('quarter')">
-          <span class="rm-goal-row-label"><i data-lucide="target" style="width:12px;height:12px"></i> 3ヶ月の目標</span>
-          <span class="rm-goal-row-chevron">▾</span>
+        <div class="rm-horizon-card" id="rmhc-half" style="--hc:#f59e0b" onclick="toggleRmHorizon('half')">
+          <div class="rm-horizon-label">↗ 半年</div>
+          <div class="rm-horizon-preview empty" id="rmhp-half">未設定</div>
+          <div class="rm-horizon-ta-wrap">
+            <textarea class="rm-horizon-ta" id="rmg-half" rows="2" placeholder="半年の目標…"
+              onmousedown="event.stopPropagation()" onclick="event.stopPropagation()" oninput="saveRmGoals();updateRmHorizonPreview('half');rmAutoResize(this)"></textarea>
+          </div>
         </div>
-        <div class="rm-goal-row-body">
-          <textarea class="rm-goal-input" id="rmg-quarter" placeholder="3ヶ月で達成したいこと..." rows="2" oninput="saveRmGoals()"></textarea>
-        </div>
-      </div>
-      <div class="rm-goal-row" id="rmgrow-half">
-        <div class="rm-goal-row-header" onclick="toggleRmGoalRow('half')">
-          <span class="rm-goal-row-label"><i data-lucide="trending-up" style="width:12px;height:12px"></i> 半年の目標</span>
-          <span class="rm-goal-row-chevron">▾</span>
-        </div>
-        <div class="rm-goal-row-body">
-          <textarea class="rm-goal-input" id="rmg-half" placeholder="半年で達成したいこと..." rows="2" oninput="saveRmGoals()"></textarea>
-        </div>
-      </div>
-      <div class="rm-goal-row" id="rmgrow-year">
-        <div class="rm-goal-row-header" onclick="toggleRmGoalRow('year')">
-          <span class="rm-goal-row-label"><i data-lucide="flag" style="width:12px;height:12px"></i> 1年の目標</span>
-          <span class="rm-goal-row-chevron">▾</span>
-        </div>
-        <div class="rm-goal-row-body">
-          <textarea class="rm-goal-input" id="rmg-year" placeholder="1年で達成したいこと..." rows="2" oninput="saveRmGoals()"></textarea>
+        <div class="rm-horizon-card" id="rmhc-year" style="--hc:#f43f5e" onclick="toggleRmHorizon('year')">
+          <div class="rm-horizon-label">🏁 1年</div>
+          <div class="rm-horizon-preview empty" id="rmhp-year">未設定</div>
+          <div class="rm-horizon-ta-wrap">
+            <textarea class="rm-horizon-ta" id="rmg-year" rows="2" placeholder="1年の目標…"
+              onmousedown="event.stopPropagation()" onclick="event.stopPropagation()" oninput="saveRmGoals();updateRmHorizonPreview('year');rmAutoResize(this)"></textarea>
+          </div>
         </div>
       </div>
     </div>
@@ -3791,6 +4266,8 @@ function initDiaryShortcuts() {
         if (ev.key === 'i') { ev.preventDefault(); fmtCE(id, 'italic'); }
       }
     });
+    // Hook floating toolbar + slash commands into existing modal editors
+    if (typeof initNotionEditor === 'function') initNotionEditor(el);
   });
 }
 
@@ -3988,6 +4465,13 @@ function openModal(type, id) {
       document.getElementById('daily-body-morning').innerHTML = '';
       document.getElementById('daily-body-night').innerHTML = '';
     }
+    // Hook floating toolbar + slash commands into modal editors
+    setTimeout(() => {
+      if (typeof initNotionEditor === 'function') {
+        initNotionEditor(document.getElementById('daily-body-morning'));
+        initNotionEditor(document.getElementById('daily-body-night'));
+      }
+    }, 50);
   }
   if (type === 'goal') {
     document.getElementById('goal-progress').value = 0;
@@ -4336,7 +4820,7 @@ function renderDiaryCard(e) {
     monthStr = (d.getMonth() + 1) + '月';
   }
   return `
-  <div class="journal-card" data-diary-id="${e.id}" onclick="openModal('daily','${e.id}')">
+  <div class="journal-card" data-diary-id="${e.id}" onclick="openDiaryEntry('${e.id}')">
     <div class="journal-card-date">
       <span class="journal-date-day">${dayD || '—'}</span>
       <span class="journal-date-weekday">${weekday}</span>
@@ -4349,7 +4833,7 @@ function renderDiaryCard(e) {
         ${e.mood ? `<span class="mood">${e.mood}</span>` : ''}
         ${dayNum ? `<span class="day-badge" onclick="event.stopPropagation();editDayNum('${e.id}')" title="クリックでDAY番号を編集">DAY ${dayNum}</span>` : `<span class="day-badge" style="opacity:0.35;cursor:pointer" onclick="event.stopPropagation();editDayNum('${e.id}')" title="DAY番号を設定">DAY —</span>`}
         <div class="journal-card-actions">
-          <button class="btn-icon" onclick="event.stopPropagation();openModal('daily','${e.id}')" title="編集">${ic.pencil}</button>
+          <button class="btn-icon" onclick="event.stopPropagation();openDiaryEntry('${e.id}')" title="編集">${ic.pencil}</button>
           <button class="btn-icon danger" onclick="event.stopPropagation();deleteEntry('daily','${e.id}')" title="削除">${ic.trash}</button>
         </div>
       </div>
@@ -4375,6 +4859,7 @@ function toggleDiaryGroup(header) {
 }
 
 function renderDaily() {
+  if (typeof _diaryViewMode !== 'undefined' && _diaryViewMode === 'split') { renderDailySplitView(); return; }
   const el = document.getElementById('cards-daily');
   if (!state.daily.length) {
     el.innerHTML = emptyState('book-open', '日記がまだありません。今日の出来事を記録してみましょう。');
@@ -4396,6 +4881,387 @@ function renderDaily() {
     </div>`;
   }).join('');
   if (window.lucide) lucide.createIcons();
+}
+
+// === NOTION DIARY SYSTEM ===
+let _diaryViewMode = localStorage.getItem('diaryViewMode') || 'card';
+let _notionCurrentId = null;
+let _notionSelectedEntry = null;
+let _currentEditorEl = null;
+let _floatToolbarEl = null;
+let _slashMenuEl = null;
+let _slashMenuActive = false;
+let _slashRange = null;
+let _slashActiveIdx = 0;
+
+const SLASH_COMMANDS = [
+  { icon: '¶', label: 'テキスト', desc: '普通のテキスト', cmd: 'p' },
+  { icon: 'H1', label: '見出し1', desc: '大きな見出し', cmd: 'h1' },
+  { icon: 'H2', label: '見出し2', desc: '中くらいの見出し', cmd: 'h2' },
+  { icon: '•', label: '箇条書き', desc: 'シンプルなリスト', cmd: 'ul' },
+  { icon: '1.', label: '番号リスト', desc: '順序付きリスト', cmd: 'ol' },
+  { icon: '☐', label: 'チェックボックス', desc: 'TODOリスト', cmd: 'todo' },
+  { icon: '❝', label: '引用', desc: '引用ブロック', cmd: 'quote' },
+];
+
+function setDiaryViewMode(mode) {
+  _diaryViewMode = mode;
+  localStorage.setItem('diaryViewMode', mode);
+  renderDaily();
+  document.querySelectorAll('.diary-view-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.mode === mode);
+  });
+}
+
+function openDiaryEntry(id) {
+  if (_diaryViewMode === 'split') {
+    selectDiarySplitEntry(id);
+  } else {
+    openDiaryFullPage(id);
+  }
+}
+
+// Full-page editor
+function openDiaryFullPage(id) {
+  const entry = id ? state.daily.find(e => e.id === id) : null;
+  _notionCurrentId = id || null;
+  document.getElementById('notion-page-overlay')?.remove();
+
+  const overlay = document.createElement('div');
+  overlay.className = 'notion-page-overlay';
+  overlay.id = 'notion-page-overlay';
+
+  const dateVal = entry?.date || toLocalDateStr(new Date());
+  const titleVal = entry?.title || '';
+  const moodVal = entry?.mood || '';
+  const moods = ['最高','良い','普通','落ち込み','イライラ','眠い','集中','閃き'];
+
+  overlay.innerHTML = `
+    <div class="notion-page-topbar">
+      <button class="notion-page-back" onclick="closeNotionPage()">
+        <i data-lucide="arrow-left" style="width:14px;height:14px"></i> 日記一覧
+      </button>
+      <input type="date" id="np-date" value="${dateVal}" style="border:none;outline:none;background:transparent;font-size:12px;color:var(--text-muted);font-family:inherit;cursor:pointer;">
+      <span style="flex:1"></span>
+      ${_notionCurrentId ? `<button onclick="deleteEntry('daily','${_notionCurrentId}')" style="background:none;border:1px solid rgba(239,68,68,0.25);color:rgba(239,68,68,0.65);border-radius:6px;padding:5px 12px;font-size:12px;cursor:pointer;margin-right:6px;transition:all .12s" onmouseover="this.style.background='rgba(239,68,68,0.12)';this.style.color='#ef4444'" onmouseout="this.style.background='none';this.style.color='rgba(239,68,68,0.65)'">🗑 削除</button>` : ''}
+      <button class="notion-page-save" onclick="saveNotionEntry()">保存</button>
+    </div>
+    <div class="notion-page-body">
+      <div class="notion-page-mood" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px">
+        ${moods.map(m => `<span class="mood-opt${m===moodVal?' selected':''}" data-mood="${m}" onclick="this.closest('.notion-page-mood').querySelectorAll('.mood-opt').forEach(x=>x.classList.remove('selected'));this.classList.add('selected')">${m}</span>`).join('')}
+      </div>
+      <input class="notion-page-title" id="np-title" placeholder="今日のタイトルを入力…" value="${(titleVal||'').replace(/"/g,'&quot;')}">
+      <div class="notion-section-label morning">
+        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg>朝
+      </div>
+      <div id="np-morning" class="notion-editor-ce" contenteditable="true" data-placeholder="朝の気持ち・今日やること・意気込みなど…"></div>
+      <div class="notion-section-label night" style="margin-top:32px">
+        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>夜
+      </div>
+      <div id="np-night" class="notion-editor-ce" contenteditable="true" data-placeholder="今日の振り返り・気づき・学んだことなど…"></div>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+  if (entry?.bodyMorning) document.getElementById('np-morning').innerHTML = entry.bodyMorning;
+  if (entry?.bodyNight) document.getElementById('np-night').innerHTML = entry.bodyNight;
+  ['np-morning','np-night'].forEach(eid => initNotionEditor(document.getElementById(eid)));
+  if (window.lucide) lucide.createIcons();
+}
+
+function closeNotionPage() {
+  document.getElementById('notion-page-overlay')?.remove();
+  hideFloatToolbar();
+  hideSlashMenu();
+}
+
+function saveNotionEntry() {
+  const title = document.getElementById('np-title')?.value?.trim() || '';
+  const date = document.getElementById('np-date')?.value || toLocalDateStr(new Date());
+  const mood = document.querySelector('#notion-page-overlay .mood-opt.selected')?.dataset?.mood || '';
+  const morning = document.getElementById('np-morning')?.innerHTML || '';
+  const night = document.getElementById('np-night')?.innerHTML || '';
+  if (!morning && !night && !title) { closeNotionPage(); return; }
+  if (_notionCurrentId) {
+    const entry = state.daily.find(e => e.id === _notionCurrentId);
+    if (entry) { entry.title = title; entry.date = date; entry.mood = mood; entry.bodyMorning = morning; entry.bodyNight = night; }
+  } else {
+    state.daily = state.daily || [];
+    const ne = { id: 'daily_' + Date.now(), title, date, mood, bodyMorning: morning, bodyNight: night };
+    state.daily.push(ne);
+    _notionCurrentId = ne.id;
+  }
+  save('daily');
+  renderDaily();
+  closeNotionPage();
+}
+
+// Split view
+let _diarySidebarW = parseInt(localStorage.getItem('diarySidebarW')) || 260;
+
+function renderDailySplitView() {
+  const entries = [...(state.daily || [])].sort((a,b) => (b.date||'').localeCompare(a.date||''));
+  if (!_notionSelectedEntry && entries.length) _notionSelectedEntry = entries[0].id;
+  const container = document.getElementById('cards-daily');
+  container.innerHTML = `<div class="diary-split-layout" id="diary-split-layout" style="--diary-sidebar-w:${_diarySidebarW}px"><div class="diary-split-sidebar" id="diary-sidebar-list"></div><div class="diary-split-resizer" id="diary-split-resizer"></div><div class="diary-split-main" id="diary-split-main"></div></div>`;
+  renderDiarySidebarList(entries);
+  if (_notionSelectedEntry) renderDiarySplitEditor(_notionSelectedEntry);
+  initDiaryResizer();
+}
+
+function renderDiarySidebarList(entries) {
+  const sidebar = document.getElementById('diary-sidebar-list');
+  if (!sidebar) return;
+  const stripH = s => (s||'').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();
+  const WEEKDAYS = ['日','月','火','水','木','金','土'];
+  sidebar.innerHTML = entries.map(e => {
+    let dayD='—', weekday='', monthStr='';
+    if (e.date) {
+      const d = new Date(e.date + 'T00:00:00');
+      dayD = d.getDate();
+      weekday = WEEKDAYS[d.getDay()];
+      monthStr = (d.getMonth()+1) + '月';
+    }
+    const dayNum = e.dayNum != null ? e.dayNum : getDayNumber(e.date);
+    const preview = stripH(e.bodyMorning||e.bodyNight||'').slice(0,50);
+    return `
+    <div class="diary-split-entry${e.id===_notionSelectedEntry?' active':''}" onclick="selectDiarySplitEntry('${e.id}')">
+      <div class="ds-entry-row">
+        <div class="ds-date-block">
+          <span class="ds-day">${dayD}</span>
+          <span class="ds-weekday">${weekday}</span>
+          <span class="ds-month">${monthStr}</span>
+        </div>
+        <div class="ds-content">
+          <div class="diary-split-entry-title">${esc(e.title||'無題')}</div>
+          ${preview?`<div class="diary-split-entry-preview">${esc(preview)}</div>`:''}
+          <div class="ds-footer">
+            ${e.mood?`<span class="ds-mood">${e.mood}</span>`:''}
+            ${dayNum?`<span class="ds-day-badge">DAY ${dayNum}</span>`:''}
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('') + `<div style="padding:12px 8px"><button onclick="addDiaryEntry()" style="width:100%;padding:8px;border-radius:8px;border:1px dashed var(--border);background:transparent;color:var(--text-muted);cursor:pointer;font-size:13px">＋ 新しい日記</button></div>`;
+}
+
+function selectDiarySplitEntry(id) {
+  _notionSelectedEntry = id;
+  document.querySelectorAll('.diary-split-entry').forEach(e => e.classList.remove('active'));
+  const clicked = document.querySelector(`.diary-split-entry[onclick*="${id}"]`);
+  if (clicked) clicked.classList.add('active');
+  renderDiarySplitEditor(id);
+}
+
+function renderDiarySplitEditor(id) {
+  const entry = state.daily.find(e => e.id === id);
+  if (!entry) return;
+  const main = document.getElementById('diary-split-main');
+  if (!main) return;
+  _notionCurrentId = id;
+  const moods = ['最高','良い','普通','落ち込み','イライラ','眠い','集中','閃き'];
+  main.innerHTML = `<div class="diary-split-editor">
+    <div class="split-editor-topbar">
+      <span class="split-topbar-save" id="split-autosave">自動保存</span>
+      <button class="split-topbar-btn" onclick="openDiaryFullPage('${id}')" title="フルページで開く">⊙ フルページ</button>
+      <button class="split-topbar-btn danger" onclick="deleteEntry('daily','${id}')" title="削除">🗑 削除</button>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px">
+      ${moods.map(m=>`<span class="mood-opt${m===entry.mood?' selected':''}" data-mood="${m}" onclick="this.parentNode.querySelectorAll('.mood-opt').forEach(x=>x.classList.remove('selected'));this.classList.add('selected');autoSaveSplit('${id}')">${m}</span>`).join('')}
+    </div>
+    <input class="notion-page-title" style="font-size:1.8em" id="split-title" placeholder="タイトルをつける…" value="${esc(entry.title||'')}" oninput="autoSaveSplit('${id}')">
+    <div class="notion-section-label morning"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg>朝</div>
+    <div id="split-morning" class="notion-editor-ce" contenteditable="true" data-placeholder="朝の気持ち・今日やること・意気込みなど…"></div>
+    <div class="notion-section-label night" style="margin-top:24px"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>夜</div>
+    <div id="split-night" class="notion-editor-ce" contenteditable="true" data-placeholder="今日の振り返り・気づき・学んだことなど…"></div>
+  </div>`;
+  const mEl = document.getElementById('split-morning');
+  const nEl = document.getElementById('split-night');
+  if (entry.bodyMorning) mEl.innerHTML = entry.bodyMorning;
+  if (entry.bodyNight) nEl.innerHTML = entry.bodyNight;
+  [mEl, nEl].forEach(el => {
+    initNotionEditor(el);
+    el.addEventListener('blur', ()=>autoSaveSplit(id));
+    el.addEventListener('input', ()=>autoSaveSplit(id));
+  });
+}
+
+let _splitSaveTimer = null;
+function autoSaveSplit(id) {
+  const entry = state.daily.find(e => e.id === id);
+  if (!entry) return;
+  const t = document.getElementById('split-title');
+  const m = document.getElementById('split-morning');
+  const n = document.getElementById('split-night');
+  const mood = document.querySelector('#diary-split-main .mood-opt.selected');
+  if (t) entry.title = t.value.trim();
+  if (m) entry.bodyMorning = m.innerHTML;
+  if (n) entry.bodyNight = n.innerHTML;
+  if (mood) entry.mood = mood.dataset.mood;
+  clearTimeout(_splitSaveTimer);
+  _splitSaveTimer = setTimeout(() => {
+    save('daily');
+    renderDiarySidebarList([...state.daily].sort((a,b)=>(b.date||'').localeCompare(a.date||'')));
+    const ind = document.getElementById('split-autosave');
+    if (ind) { ind.textContent = '保存済み ✓'; setTimeout(()=>{ if(ind) ind.textContent='自動保存'; }, 1500); }
+  }, 500);
+}
+
+// Sidebar resize
+function initDiaryResizer() {
+  const resizer = document.getElementById('diary-split-resizer');
+  const layout = document.getElementById('diary-split-layout');
+  if (!resizer || !layout) return;
+  resizer.addEventListener('mousedown', ev => {
+    ev.preventDefault();
+    resizer.classList.add('dragging');
+    const startX = ev.clientX;
+    const startW = _diarySidebarW;
+    const onMove = mv => {
+      const newW = Math.max(160, Math.min(520, startW + mv.clientX - startX));
+      _diarySidebarW = newW;
+      layout.style.setProperty('--diary-sidebar-w', newW + 'px');
+    };
+    const onUp = () => {
+      resizer.classList.remove('dragging');
+      localStorage.setItem('diarySidebarW', _diarySidebarW);
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+    };
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+  });
+}
+
+// Floating toolbar
+function ensureFloatToolbar() {
+  if (_floatToolbarEl) return;
+  const el = document.createElement('div');
+  el.className = 'notion-float-toolbar';
+  el.id = 'notion-float-toolbar';
+  el.style.display = 'none';
+  el.innerHTML = `
+    <button class="nft-btn" onmousedown="event.preventDefault();nftFmt('bold')"><b>B</b></button>
+    <button class="nft-btn" onmousedown="event.preventDefault();nftFmt('italic')"><i>I</i></button>
+    <button class="nft-btn" onmousedown="event.preventDefault();nftFmt('strike')"><s>S</s></button>
+    <div class="nft-sep"></div>
+    <button class="nft-btn" onmousedown="event.preventDefault();nftFmt('h1')">H1</button>
+    <button class="nft-btn" onmousedown="event.preventDefault();nftFmt('h2')">H2</button>
+    <div class="nft-sep"></div>
+    <button class="nft-btn" onmousedown="event.preventDefault();nftFmt('ul')">• リスト</button>
+    <button class="nft-btn" onmousedown="event.preventDefault();nftFmt('quote')">❝ 引用</button>
+  `;
+  document.body.appendChild(el);
+  _floatToolbarEl = el;
+}
+
+function nftFmt(cmd) {
+  if (!_currentEditorEl) return;
+  fmtCE(_currentEditorEl.id, cmd);
+}
+
+function showFloatToolbar(rect) {
+  ensureFloatToolbar();
+  _floatToolbarEl.style.display = 'flex';
+  requestAnimationFrame(() => {
+    const tw = _floatToolbarEl.offsetWidth;
+    const left = Math.max(8, rect.left + rect.width/2 - tw/2);
+    const top = rect.top + window.scrollY - 48;
+    _floatToolbarEl.style.left = left + 'px';
+    _floatToolbarEl.style.top = top + 'px';
+  });
+}
+
+function hideFloatToolbar() {
+  if (_floatToolbarEl) _floatToolbarEl.style.display = 'none';
+}
+
+function checkFloatToolbar(el) {
+  _currentEditorEl = el;
+  const sel = window.getSelection();
+  if (!sel || sel.isCollapsed || !sel.toString().trim()) { hideFloatToolbar(); return; }
+  const rect = sel.getRangeAt(0).getBoundingClientRect();
+  if (rect.width === 0) { hideFloatToolbar(); return; }
+  showFloatToolbar(rect);
+}
+
+// Slash commands
+function ensureSlashMenu() {
+  if (_slashMenuEl) return;
+  _slashMenuEl = document.createElement('div');
+  _slashMenuEl.className = 'slash-menu';
+  _slashMenuEl.id = 'slash-menu';
+  _slashMenuEl.style.display = 'none';
+  document.body.appendChild(_slashMenuEl);
+}
+
+function showSlashMenu(x, y) {
+  ensureSlashMenu();
+  _slashActiveIdx = 0;
+  renderSlashMenuItems();
+  _slashMenuEl.style.display = 'block';
+  _slashMenuEl.style.left = Math.min(x, window.innerWidth - 220) + 'px';
+  _slashMenuEl.style.top = Math.min(y + 4, window.innerHeight - 260) + 'px';
+  _slashMenuActive = true;
+}
+
+function renderSlashMenuItems() {
+  if (!_slashMenuEl) return;
+  _slashMenuEl.innerHTML = SLASH_COMMANDS.map((c,i) => `
+    <div class="slash-menu-item${i===_slashActiveIdx?' active':''}" onmousedown="event.preventDefault();execSlashCmd('${c.cmd}')">
+      <div class="slash-menu-icon">${c.icon}</div>
+      <div><div class="slash-menu-label">${c.label}</div><div class="slash-menu-desc">${c.desc}</div></div>
+    </div>`).join('');
+}
+
+function hideSlashMenu() {
+  _slashMenuActive = false;
+  if (_slashMenuEl) { _slashMenuEl.style.display='none'; _slashMenuEl.innerHTML=''; }
+}
+
+function execSlashCmd(cmd) {
+  if (_slashRange) {
+    const sel = window.getSelection();
+    const r = _slashRange.cloneRange();
+    r.setStart(r.startContainer, Math.max(0, r.startOffset - 1));
+    sel.removeAllRanges();
+    sel.addRange(r);
+    document.execCommand('delete', false);
+  }
+  if (_currentEditorEl && cmd !== 'p') fmtCE(_currentEditorEl.id, cmd);
+  hideSlashMenu();
+  _currentEditorEl?.focus();
+}
+
+// Editor initializer
+function initNotionEditor(el) {
+  if (!el || el.dataset.notionInit) return;
+  el.dataset.notionInit = '1';
+  el.addEventListener('focus', () => { _currentEditorEl = el; });
+  el.addEventListener('mouseup', () => checkFloatToolbar(el));
+  el.addEventListener('keyup', e => { if (!['ArrowUp','ArrowDown'].includes(e.key)) checkFloatToolbar(el); });
+  el.addEventListener('keydown', e => {
+    if (!_slashMenuActive) return;
+    if (e.key === 'ArrowDown') { e.preventDefault(); _slashActiveIdx=(_slashActiveIdx+1)%SLASH_COMMANDS.length; renderSlashMenuItems(); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); _slashActiveIdx=(_slashActiveIdx-1+SLASH_COMMANDS.length)%SLASH_COMMANDS.length; renderSlashMenuItems(); }
+    else if (e.key === 'Enter') { e.preventDefault(); execSlashCmd(SLASH_COMMANDS[_slashActiveIdx].cmd); }
+    else if (e.key === 'Escape') hideSlashMenu();
+  });
+  el.addEventListener('input', () => {
+    const sel = window.getSelection();
+    if (!sel?.rangeCount) return;
+    const range = sel.getRangeAt(0);
+    const node = range.startContainer;
+    const text = node.textContent || '';
+    const offset = range.startOffset;
+    if (text[offset-1] === '/' && (offset===1 || /[\n\r]/.test(text[offset-2]))) {
+      const rect = range.getBoundingClientRect();
+      _slashRange = range.cloneRange();
+      showSlashMenu(rect.left, rect.bottom);
+    } else if (_slashMenuActive) {
+      hideSlashMenu();
+    }
+  });
 }
 
 function renderDream() {
@@ -5152,6 +6018,10 @@ function renderDashboard() {
   const jobByStatus = {};
   (state.job||[]).forEach(j => { jobByStatus[j.status] = (jobByStatus[j.status]||0)+1; });
 
+  // Today's habit completion (for KPI)
+  const todayHabitsDone = state.habits.filter(h => h.logs && h.logs[todayStr]).length;
+  const todayHabitPct = state.habits.length ? Math.round(todayHabitsDone / state.habits.length * 100) : 0;
+
   // Habit chain (last 28 days)
   const GRID = 28;
   const gridDates = [];
@@ -5216,6 +6086,26 @@ function renderDashboard() {
   const questDone = qd.dailyQuests.filter(q=>(q.completedDates||[]).includes(todayISO)).length;
   const questAll = qd.dailyQuests.length;
   const maxSkillXp = Math.max(...skillsXp.map(s=>s.totalXp), 1);
+
+  // Today's focus quests for dashboard widget
+  const dashFocusQuests = getTodayFocusQuests(qd, todayStr);
+  const dashFocusDone = dashFocusQuests.filter(q => (q.completedDates||[]).includes(todayStr)).length;
+  const dashAllFocusDone = dashFocusDone >= dashFocusQuests.length;
+  const dashFocusCheckSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+  const dashFocusHtml = dashFocusQuests.map(q => {
+    const isDone = (q.completedDates||[]).includes(todayStr);
+    const skill = qd.skills.find(s => s.id === q.skillId) || { color:'#818cf8', icon:'zap', name:'' };
+    return `<div class="d2-focus-item${isDone?' done':''}">
+      <button class="d2-focus-check" onclick="completeDaily('${q.id}',this)" ${isDone?'disabled':''}>${isDone?dashFocusCheckSvg:''}</button>
+      <div class="d2-focus-body">
+        <div class="d2-focus-title">${esc(q.title)}</div>
+        <span class="d2-focus-tag" style="background:${skill.color}16;color:${skill.color}">
+          <i data-lucide="${skill.icon}" style="width:8px;height:8px"></i>${skill.name}
+        </span>
+      </div>
+      <span class="d2-focus-xp">+${q.xpReward}</span>
+    </div>`;
+  }).join('');
 
   const skillMiniHtml = skillsXp.map(s => {
     const lv = xpLevel(s.totalXp).level;
@@ -5305,57 +6195,320 @@ function renderDashboard() {
     </div>`;
   }).join('');
 
-  root.innerHTML = `
-    <!-- POMODORO -->
-    <div id="pomodoro-root"></div>
+  // ── Mood trend (30 days) ──
+  const MOOD_META = [
+    { k:'最高',    c:'#10b981', e:'🌟', score:5 },
+    { k:'良い',    c:'#6366f1', e:'😊', score:4 },
+    { k:'閃き',    c:'#f59e0b', e:'💡', score:4 },
+    { k:'集中',    c:'#8b5cf6', e:'🎯', score:4 },
+    { k:'普通',    c:'#6b7280', e:'😐', score:3 },
+    { k:'眠い',    c:'#94a3b8', e:'😴', score:2 },
+    { k:'落ち込み',c:'#f97316', e:'😔', score:2 },
+    { k:'イライラ',c:'#ef4444', e:'😤', score:1 },
+  ];
+  const moodMeta = k => MOOD_META.find(m=>m.k===k) || { c:'transparent', e:'', score:3 };
+  const MOOD_DAYS = 30;
+  const moodDates30 = [];
+  for (let i=MOOD_DAYS-1; i>=0; i--) { const d=new Date(todayD); d.setDate(d.getDate()-i); moodDates30.push(toLocalDateStr(d)); }
+  const moodByDate = {};
+  state.daily.forEach(e => { if(e.mood && e.date) moodByDate[e.date] = e.mood; });
+  const hasMoodData = Object.keys(moodByDate).length > 0;
 
-    <!-- HERO -->
-    <div class="dash-hero">
-      <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;position:relative;z-index:1">
-        <div class="dash-hero-lv">Lv<br>${level}</div>
-        <div style="flex:1;min-width:0">
-          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px">
-            <span style="font-size:13px;font-weight:700;color:rgba(255,255,255,0.9)">${totalXp.toLocaleString()} XP</span>
-            <span style="font-size:11px;color:rgba(255,255,255,0.5)">あと ${toNext - inLevel} XP → Lv${level+1}</span>
+  const moodDotHtml = moodDates30.map(ds => {
+    const mood = moodByDate[ds];
+    const mm = mood ? moodMeta(mood) : null;
+    const isToday = ds === todayStr;
+    const entry = state.daily.find(e=>e.date===ds);
+    const glowStyle = mm && isToday ? `,outline:2.5px solid rgba(255,255,255,0.65),outline-offset:1.5px` : '';
+    const bgStyle = mm
+      ? `background:${mm.c};box-shadow:inset 0 1px 0 rgba(255,255,255,0.15)${glowStyle}`
+      : `background:${isToday?'rgba(99,102,241,0.3)':'var(--border)'}`;
+    const onclick = entry ? `onclick="openModal('daily','${entry.id}')"` : '';
+    return `<div class="mood-dot" style="${bgStyle}" title="${ds}${mood?' — '+mood:' 未記録'}" ${onclick}></div>`;
+  }).join('');
+
+  const moodFreq = {};
+  moodDates30.forEach(ds => { const m=moodByDate[ds]; if(m) moodFreq[m]=(moodFreq[m]||0)+1; });
+  const totalMoodDays = Object.values(moodFreq).reduce((s,n)=>s+n, 0);
+  const topMoods = [...MOOD_META].filter(m=>moodFreq[m.k]).sort((a,b)=>(moodFreq[b.k]||0)-(moodFreq[a.k]||0));
+  const moodFreqHtml = topMoods.map(m => {
+    const n = moodFreq[m.k];
+    const pct = Math.round(n/totalMoodDays*100);
+    return `<div class="mood-freq-row">
+      <span class="mood-freq-emoji">${m.e}</span>
+      <span class="mood-freq-label">${m.k}</span>
+      <div class="mood-freq-bar-bg"><div class="mood-freq-bar-fill" style="width:${pct}%;background:${m.c}"></div></div>
+      <span class="mood-freq-count" style="color:${m.c}">${n}日</span>
+    </div>`;
+  }).join('');
+
+  // 7-day trend comparison
+  const last7scores = moodDates30.slice(-7).map(ds=>moodByDate[ds]).filter(Boolean).map(m=>moodMeta(m).score);
+  const prev7scores = moodDates30.slice(-14,-7).map(ds=>moodByDate[ds]).filter(Boolean).map(m=>moodMeta(m).score);
+  const avg7 = last7scores.length ? last7scores.reduce((s,v)=>s+v,0)/last7scores.length : null;
+  const avgP7 = prev7scores.length ? prev7scores.reduce((s,v)=>s+v,0)/prev7scores.length : null;
+  let moodTrendBadge = '';
+  if (avg7 !== null && avgP7 !== null) {
+    const diff = avg7 - avgP7;
+    const [tc,ti,tl] = diff > 0.2 ? ['#10b981','↑','先週より良い'] : diff < -0.2 ? ['#ef4444','↓','先週より低い'] : ['#6b7280','→','先週と同じ'];
+    moodTrendBadge = `<span style="font-size:10px;font-weight:600;color:${tc};background:${tc}18;border:1px solid ${tc}30;border-radius:6px;padding:2px 7px;letter-spacing:0;text-transform:none">${ti} ${tl}</span>`;
+  }
+  const topMoodBadge = topMoods[0] ? `<span style="font-size:10px;font-weight:600;color:${topMoods[0].c};background:${topMoods[0].c}18;border:1px solid ${topMoods[0].c}30;border-radius:6px;padding:2px 7px;letter-spacing:0;text-transform:none">${topMoods[0].e} ${topMoods[0].k}</span>` : '';
+
+  // Kanban html for d2 design
+  const d2KanbanHtml = kanbanCols.map(col => {
+    const n = kanbanTasks.filter(t=>t.status===col.key).length;
+    return `<div class="d2-kb-col" style="border-top:2px solid ${col.color}">
+      <div class="d2-kb-num" style="color:${col.color}">${n}</div>
+      <div class="d2-kb-label" style="color:${col.color}">${esc(col.label)}</div>
+    </div>`;
+  }).join('');
+
+  // Skills html for d2 design
+  const d2SkillsHtml = skillsXp.length === 0
+    ? `<div style="text-align:center;padding:24px 0;color:var(--text-muted);font-size:12px">スキルデータなし</div>`
+    : skillsXp.map(s => {
+        const lv = xpLevel(s.totalXp).level;
+        const pct = Math.round(s.totalXp/maxSkillXp*100);
+        return `<div class="d2-skill-row">
+          <div class="d2-skill-dot" style="background:${s.color}"></div>
+          <div class="d2-skill-name">${esc(s.name)}</div>
+          <div class="d2-skill-bar"><div class="d2-skill-fill" style="width:${pct}%;background:${s.color}"></div></div>
+          <div class="d2-skill-lv" style="color:${s.color}">Lv${lv}</div>
+        </div>`;
+      }).join('');
+
+  // ── Morning hero ──
+  const nowH = new Date().getHours();
+  const greeting = nowH < 11 ? 'おはようございます ☀️' : nowH < 18 ? 'こんにちは 👋' : nowH < 22 ? 'こんばんは 🌆' : 'お疲れ様です 🌙';
+  const dayOfWeek = ['日','月','火','水','木','金','土'][new Date().getDay()];
+  const heroDateStr = `${new Date().getFullYear()}年${new Date().getMonth()+1}月${new Date().getDate()}日（${dayOfWeek}）`;
+  // Today overall progress: habits + focus quests combined
+  const totalToday = (state.habits.length) + dashFocusQuests.length;
+  const doneToday = todayHabitsDone + dashFocusDone;
+  const todayPct = totalToday > 0 ? Math.round(doneToday / totalToday * 100) : 0;
+  const ringR = 33; const ringC = 2 * Math.PI * ringR;
+  const ringOffset = ringC * (1 - todayPct / 100);
+  const ringColor = todayPct >= 80 ? '#10b981' : todayPct >= 40 ? '#6366f1' : '#475569';
+  const dayNum = getDayNumber(todayStr) || Math.ceil((new Date(todayStr) - new Date('2026-01-01')) / 86400000);
+  // Week progress
+  const weekDow = new Date().getDay(); // 0=Sun
+  const weekDaysPassed = weekDow === 0 ? 7 : weekDow;
+  const weekStartDate = new Date(todayD); weekStartDate.setDate(weekStartDate.getDate() - weekDaysPassed + 1);
+  let weekActiveDays = 0;
+  for (let i = 0; i < weekDaysPassed; i++) {
+    const d = new Date(weekStartDate); d.setDate(d.getDate() + i);
+    const ds = toLocalDateStr(d);
+    if (qd.dailyQuests.some(q => (q.completedDates||[]).includes(ds)) || state.habits.some(h => h.logs && h.logs[ds])) weekActiveDays++;
+  }
+
+  // ── Habit quick pills ──
+  const habitQuickHtml = state.habits.length === 0
+    ? `<span style="font-size:12px;color:var(--text-muted)">習慣を追加してください</span>`
+    : state.habits.map(h => {
+        const done = h.logs && h.logs[todayStr];
+        return `<div class="dhq-pill${done?' done':''}" onclick="toggleHabitLog('${h.id}','${todayStr}')">
+          <span class="dhq-dot" style="background:${h.color}"></span>
+          <span class="dhq-name">${esc(h.title)}</span>
+          <span class="dhq-ck">${done?'✓':''}</span>
+        </div>`;
+      }).join('');
+
+  // ── Deadline alerts ──
+  const sevenDaysLater = new Date(todayD); sevenDaysLater.setDate(sevenDaysLater.getDate() + 7);
+  const deadlineAlerts = [];
+  krs.forEach(kr => {
+    if (!kr.done && kr.deadline) {
+      const dl = new Date(kr.deadline + 'T00:00:00');
+      const daysLeft = Math.ceil((dl - todayD) / 86400000);
+      if (daysLeft <= 7 && daysLeft >= 0) {
+        const parent = state.goal.find(g => g.id === kr.parentId);
+        deadlineAlerts.push({ title: kr.title, parent: parent?.title, daysLeft, danger: daysLeft <= 2 });
+      }
+    }
+  });
+  const alertsHtml = deadlineAlerts.length === 0 ? '' : `
+    <div class="d2-card">
+      <div class="d2-card-hd"><div class="d2-card-hd-l">⚠️ 期限アラート</div></div>
+      <div class="dash-alerts">
+        ${deadlineAlerts.map(a => `
+          <div class="dash-alert ${a.danger?'danger':'warn'}">
+            <span class="dash-alert-icon">${a.danger?'🔴':'🟡'}</span>
+            <div class="dash-alert-text">
+              <div>${esc(a.title)}</div>
+              <div class="dash-alert-due">${a.parent ? esc(a.parent)+' · ' : ''}あと${a.daysLeft}日</div>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+
+  // ── Focus hero HTML (reused in both dashboard and quest tab) ──
+  const focusCheckSvgBig = `<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+  function buildFocusHero(focusQ, doneCnt, isAllDone, totalFocusXp, showSeeAll) {
+    const dotsHtml = focusQ.map((_, i) => {
+      const cls = i < doneCnt ? 'done' : i === doneCnt ? 'next' : 'fpd-empty';
+      return `<span class="fpd ${cls}"></span>`;
+    }).join('');
+    const itemsHtml = focusQ.map(q => {
+      const isDone = (q.completedDates||[]).includes(todayStr);
+      const skill = qd.skills.find(s => s.id === q.skillId) || { color:'#818cf8', icon:'zap', name:'' };
+      return `<div class="qf-item${isDone?' done':''}">
+        <button class="qf-check" onclick="completeDaily('${q.id}',this)" ${isDone?'disabled':''}>${isDone?focusCheckSvgBig:''}</button>
+        <div class="qf-body">
+          <div class="qf-title">${esc(q.title)}</div>
+          <span class="qf-skill" style="background:${skill.color}16;color:${skill.color}">
+            <i data-lucide="${skill.icon}" style="width:9px;height:9px"></i>${skill.name}
+          </span>
+        </div>
+        <span class="qf-xp">+${q.xpReward}</span>
+      </div>`;
+    }).join('');
+    return `<div class="focus-hero">
+      <div class="focus-hero-gradient">
+        <div class="focus-hero-hd">
+          <div>
+            <div class="focus-hero-eyebrow">TODAY'S MISSION</div>
+            <div class="focus-hero-title">今日のフォーカス</div>
           </div>
-          <div class="dash-hero-bar-bg"><div class="dash-hero-bar-fill" style="width:${Math.round(inLevel/toNext*100)}%"></div></div>
+          <div class="focus-hero-right">
+            <div class="focus-prog-dots">${dotsHtml}</div>
+            <div class="focus-prog-label">${doneCnt} / ${focusQ.length} クリア</div>
+            <button class="focus-reroll-btn" onclick="rerollFocusQuests()">🎲 再抽選</button>
+          </div>
+        </div>
+        <div class="qf-items">${itemsHtml}</div>
+        ${isAllDone ? `<div class="focus-done-banner">🎉 今日のミッション全クリア！</div>` : ''}
+      </div>
+      <div class="focus-hero-footer">
+        <span class="focus-xp-total">⚡ 最大 +${totalFocusXp} XP 獲得可能</span>
+        ${showSeeAll ? `<span class="focus-see-all" onclick="switchTab('quest')">全クエストを見る →</span>` : ''}
+      </div>
+    </div>`;
+  }
+  const dashTotalFocusXp = dashFocusQuests.reduce((s,q) => s + q.xpReward, 0);
+  const dashFocusHeroHtml = buildFocusHero(dashFocusQuests, dashFocusDone, dashAllFocusDone, dashTotalFocusXp, true);
+  const habitKpiColor = todayHabitPct >= 80 ? '#10b981' : todayHabitPct >= 40 ? '#f59e0b' : 'var(--text)';
+  const lvPct = Math.round(inLevel/toNext*100);
+
+  root.innerHTML = `
+    <!-- MORNING HERO -->
+    <div class="dash-morning">
+      <div class="dm-orb1"></div><div class="dm-orb2"></div>
+      <div class="dm-left">
+        <div class="dm-eyebrow">${greeting}</div>
+        <div class="dm-name">足立 開</div>
+        <div class="dm-date">${heroDateStr} · DAY ${dayNum}</div>
+        <div class="dm-chips">
+          <span class="dm-chip${questStreak>=3?' hot':''}">🔥 ${questStreak}日連続</span>
+          <span class="dm-chip${weekActiveDays>=3?' good':''}">📅 今週 ${weekActiveDays}/${weekDaysPassed}日 アクティブ</span>
+          <span class="dm-chip${diaryStreak>0?' good':''}">📖 日記 ${diaryStreak}日連続</span>
+          ${todayPct>=80?`<span class="dm-chip good">✨ 今日 ${todayPct}% 達成！</span>`:''}
         </div>
       </div>
-      <div style="display:flex;gap:7px;flex-wrap:wrap;position:relative;z-index:1">
-        <span class="dash-hero-badge" style="background:${si.color}30;color:${si.color};border:1px solid ${si.color}50">
-          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-          ${questStreak}日連続
-        </span>
-        <span class="dash-hero-badge" style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.75);border:1px solid rgba(255,255,255,0.15)">
-          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          クエスト ${questDone}/${questAll}
-        </span>
-        <span class="dash-hero-badge" style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.75);border:1px solid rgba(255,255,255,0.15)">
-          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-          日記 ${diaryStreak}日連続
-        </span>
-        <span class="dash-hero-badge" style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.75);border:1px solid rgba(255,255,255,0.15)">
-          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-          目標 ${activeGoals}件進行中
-        </span>
+      <div class="dm-ring-wrap">
+        <svg width="86" height="86" viewBox="0 0 84 84">
+          <circle cx="42" cy="42" r="${ringR}" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="6"/>
+          <circle cx="42" cy="42" r="${ringR}" fill="none" stroke="${ringColor}" stroke-width="6"
+            stroke-dasharray="${ringC - ringOffset} ${ringOffset}"
+            stroke-dashoffset="${ringC * 0.25}" stroke-linecap="round" style="transition:stroke-dasharray .5s"/>
+        </svg>
+        <div class="dm-ring-inner">
+          <span class="dm-ring-pct">${todayPct}</span>
+          <span class="dm-ring-label">今日</span>
+        </div>
       </div>
     </div>
 
-    <!-- SKILLS ROW -->
-    <div class="dsk-scroll">
-      <div class="dsk-row">${skillCardsHtml}</div>
+    <!-- POMODORO + TODAY'S FOCUS side-by-side -->
+    <div class="dash-pom-focus">
+      <div id="pomodoro-root" style="display:flex;flex-direction:column;height:100%"></div>
+      ${dashFocusHeroHtml}
     </div>
 
-    <!-- MAIN ROW -->
-    <div class="dash-main-row">
-      <!-- LEFT: habits -->
-      <div class="dash-section">
-        <div class="dash-section-header">
-          <span class="dash-section-title">
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    <!-- HABIT QUICK CHECK -->
+    ${state.habits.length > 0 ? `
+    <div class="dhq-wrap">
+      <div class="dhq-label">今日の習慣</div>
+      <div class="dhq-row">${habitQuickHtml}</div>
+    </div>` : ''}
+
+    <!-- KPI ROW -->
+    <div class="d2-kpi-row">
+      <div class="d2-kpi-card" style="--kc:#10b981">
+        <div class="d2-kpi-glyph">💪</div>
+        <div class="d2-kpi-label">今日の習慣</div>
+        <div class="d2-kpi-num" style="color:${habitKpiColor}">${todayHabitPct}<span style="font-size:1.2rem;opacity:0.55">%</span></div>
+        <div class="d2-kpi-sub">${todayHabitsDone} / ${state.habits.length} 達成</div>
+      </div>
+      <div class="d2-kpi-card" style="--kc:#6366f1">
+        <div class="d2-kpi-glyph">⚔️</div>
+        <div class="d2-kpi-label">フォーカス</div>
+        <div class="d2-kpi-num">${dashFocusDone}<span style="font-size:1.2rem;opacity:0.55"> / ${dashFocusQuests.length}</span></div>
+        <div class="d2-kpi-sub">今日のミッション</div>
+      </div>
+      <div class="d2-kpi-card" style="--kc:#f59e0b">
+        <div class="d2-kpi-glyph">🔥</div>
+        <div class="d2-kpi-label">連続記録</div>
+        <div class="d2-kpi-num">${questStreak}<span style="font-size:1.2rem;opacity:0.55">日</span></div>
+        <div class="d2-kpi-sub">クエスト連続</div>
+      </div>
+      <div class="d2-kpi-card" style="--kc:#0ea5e9">
+        <div class="d2-kpi-glyph">📖</div>
+        <div class="d2-kpi-label">日記</div>
+        <div class="d2-kpi-num">${diaryStreak}<span style="font-size:1.2rem;opacity:0.55">日</span></div>
+        <div class="d2-kpi-sub">連続執筆</div>
+      </div>
+    </div>
+
+    <!-- DEADLINE ALERTS -->
+    ${alertsHtml}
+
+    <!-- LEVEL + SKILLS -->
+    <div class="d2-sym">
+      <div class="d2-card">
+        <div class="d2-card-hd">
+          <div class="d2-card-hd-l">
+            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            キャラクター成長
+          </div>
+        </div>
+        <div class="d2-lv-row">
+          <div class="d2-lv-badge">
+            <span class="d2-lv-badge-text">LV</span>
+            <span class="d2-lv-badge-num">${level}</span>
+          </div>
+          <div class="d2-lv-info">
+            <div class="d2-lv-xp">${totalXp.toLocaleString()} XP</div>
+            <div class="d2-lv-next">あと ${toNext - inLevel} XP → Lv${level+1}</div>
+            <div class="d2-xp-bar"><div class="d2-xp-fill" style="width:${lvPct}%"></div></div>
+          </div>
+        </div>
+        <div class="d2-chips">
+          <span class="d2-chip" style="color:${si.color};border-color:${si.color}40;background:${si.color}12">⚡ ${questStreak}日連続</span>
+          <span class="d2-chip">📖 日記 ${diaryStreak}日</span>
+          <span class="d2-chip">🎯 目標 ${activeGoals}件</span>
+        </div>
+      </div>
+      <div class="d2-card">
+        <div class="d2-card-hd">
+          <div class="d2-card-hd-l">
+            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            スキル進捗
+          </div>
+        </div>
+        ${d2SkillsHtml}
+      </div>
+    </div>
+
+    <!-- HABITS CHAIN + WORK/GOALS -->
+    <div class="d2-grid">
+      <div class="d2-card">
+        <div class="d2-card-hd">
+          <div class="d2-card-hd-l">
+            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
             習慣チェーン
-            <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-muted);font-size:10px">28日間</span>
-          </span>
+            <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px;opacity:0.6">28日間</span>
+          </div>
           <button class="btn-add-small" onclick="showAddHabitInput()">＋ 追加</button>
         </div>
         <div id="add-habit-form" style="display:none;margin-bottom:14px">
@@ -5371,51 +6524,75 @@ function renderDashboard() {
           ? `<div style="text-align:center;padding:32px 16px;color:var(--text-muted);font-size:13px">習慣を追加して毎日の記録を始めましょう</div>`
           : `<div class="habit-chain-wrap">${habitsHtml}</div>`}
         ${state.habits.length>0 ? `
-          <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border)">
-            <div class="dash-section-title" style="margin-bottom:8px">
-              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-              14日間の達成率
-            </div>
-            <div class="dash-bar-chart">${chartBars}</div>
-          </div>` : ''}
+          <hr class="d2-divider">
+          <div style="font-size:10px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px">14日達成率</div>
+          <div class="dash-bar-chart">${chartBars}</div>` : ''}
       </div>
-
-      <!-- RIGHT: work + goals -->
-      <div style="display:flex;flex-direction:column;gap:14px">
-        <div class="dash-section">
-          <div class="dash-section-title" style="margin-bottom:0">
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-            仕事タスク
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="d2-card">
+          <div class="d2-card-hd">
+            <div class="d2-card-hd-l">
+              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+              仕事タスク
+            </div>
           </div>
-          <div class="dwt-board">${kanbanBoardHtml}</div>
+          <div class="d2-kb">${d2KanbanHtml}</div>
           ${kanbanTasks.length>0 ? `
-            <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
-              <span style="font-size:11px;color:var(--text-muted)">合計 ${kanbanTasks.length} 件</span>
-              <span style="font-size:11px;font-weight:700;color:#10b981">Done ${kanbanDone}件 (${kanbanTasks.length?Math.round(kanbanDone/kanbanTasks.length*100):0}%)</span>
-            </div>` : `<div style="font-size:12px;color:var(--text-muted);text-align:center;padding:14px 0">タスクなし</div>`}
+            <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:11px;color:var(--text-muted)">計 ${kanbanTasks.length} 件</span>
+              <span style="font-size:11px;font-weight:700;color:#10b981">Done ${Math.round(kanbanDone/kanbanTasks.length*100)}%</span>
+            </div>` : `<div style="font-size:12px;color:var(--text-muted);text-align:center;padding:12px 0">タスクなし</div>`}
         </div>
-
         ${goals.length>0 ? `
-        <div class="dash-section">
-          <div class="dash-section-title" style="margin-bottom:12px">
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-            目標進捗
+        <div class="d2-card">
+          <div class="d2-card-hd">
+            <div class="d2-card-hd-l">
+              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+              目標進捗
+            </div>
           </div>
           ${goalBars}
         </div>` : ''}
       </div>
     </div>
 
-    ${state.daily.length>0 ? `
-    <div class="dash-section">
-      <div class="dash-section-title" style="margin-bottom:12px">
-        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-        最近の日記
-      </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">${recentDiary}</div>
+    <!-- MOOD + DIARY -->
+    ${hasMoodData || state.daily.length>0 ? `
+    <div class="${hasMoodData && state.daily.length>0 ? 'd2-sym' : ''}">
+      ${hasMoodData ? `
+      <div class="d2-card">
+        <div class="d2-card-hd">
+          <div class="d2-card-hd-l">
+            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 13s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+            気分トレンド
+          </div>
+          <div style="display:flex;gap:5px">${moodTrendBadge}${topMoodBadge}</div>
+        </div>
+        <div class="mood-timeline" style="margin-bottom:6px">${moodDotHtml}</div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:12px">
+          <span style="font-size:10px;color:var(--text-muted)">${moodDates30[0]}</span>
+          <span style="font-size:9px;color:var(--text-muted);opacity:0.5">30日間</span>
+          <span style="font-size:10px;color:var(--text-muted)">今日</span>
+        </div>
+        ${totalMoodDays>0 ? `<div class="mood-freq-grid">${moodFreqHtml}</div>` : ''}
+        <div class="d2-mood-legend">
+          ${MOOD_META.map(m=>`<div class="d2-mood-leg-item"><span style="width:7px;height:7px;border-radius:2px;background:${m.c};flex-shrink:0;display:inline-block"></span>${m.e}${m.k}</div>`).join('')}
+        </div>
+      </div>` : ''}
+      ${state.daily.length>0 ? `
+      <div class="d2-card">
+        <div class="d2-card-hd">
+          <div class="d2-card-hd-l">
+            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            最近の日記
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">${recentDiary}</div>
+      </div>` : ''}
     </div>` : ''}
 
-    <div class="dash-section">
+    <!-- WATCH LIST -->
+    <div class="d2-card">
       ${renderWatchList()}
     </div>
   `;
@@ -6410,6 +7587,16 @@ function rmHandleClick(e, type, id) {
   openModal(type, id);
 }
 
+// ロードマップ上でタスク完了をトグル
+function rmToggleTask(taskType, parentId, taskId) {
+  if (taskType === 'ptask') {
+    toggleProjectTask(parentId, taskId);
+  } else {
+    toggleKrTask(parentId, taskId);
+  }
+  renderRoadmap();
+}
+
 // task / ptask をロードマップ上で直接編集するミニポップアップ
 function rmEditTask(taskType, parentId, taskId, e) {
   e.stopPropagation();
@@ -6468,7 +7655,7 @@ function rmEditTask(taskType, parentId, taskId, e) {
     </div>
     <div class="gcal-popup-body">
       <input id="rte-title" class="gcal-title-input" value="${(task.title||'').replace(/"/g,'&quot;')}"
-        onkeydown="if(event.key==='Enter')saveRmTaskEditNew('${taskType}','${parentId}','${taskId}');if(event.key==='Escape')document.getElementById('rm-task-edit-popup')?.remove()">
+        onkeydown="if(event.key==='Enter'&&!event.isComposing)saveRmTaskEditNew('${taskType}','${parentId}','${taskId}');if(event.key==='Escape')document.getElementById('rm-task-edit-popup')?.remove()">
       <div class="gcal-field-label">期日</div>
       <input id="rte-date" type="date" class="form-input" style="width:100%;box-sizing:border-box;font-size:13px" value="${task.dueDate||''}">
       ${krChipsHtml}
@@ -6580,7 +7767,7 @@ function rmAddTask(laneKey, e) {
     <div style="margin-bottom:8px">
       <label style="font-size:11px;color:var(--text-muted);display:block;margin-bottom:4px">タイトル</label>
       <input id="rta-title" class="form-input" style="width:100%;box-sizing:border-box" placeholder="タスク名"
-        onkeydown="if(event.key==='Enter')saveRmAddTask('${taskType}');if(event.key==='Escape')document.getElementById('rm-task-add-popup')?.remove()">
+        onkeydown="if(event.key==='Enter'&&!event.isComposing)saveRmAddTask('${taskType}');if(event.key==='Escape')document.getElementById('rm-task-add-popup')?.remove()">
     </div>
     <div style="margin-bottom:8px">
       <label style="font-size:11px;color:var(--text-muted);display:block;margin-bottom:4px">期日</label>
@@ -6659,7 +7846,7 @@ function rmAddTaskForKr(krId, e) {
     <div style="margin-bottom:8px">
       <label style="font-size:11px;color:var(--text-muted);display:block;margin-bottom:4px">タイトル</label>
       <input id="rta-title" class="form-input" style="width:100%;box-sizing:border-box" placeholder="タスク名"
-        onkeydown="if(event.key==='Enter')saveRmAddTaskForKr('${krId}');if(event.key==='Escape')document.getElementById('rm-task-add-popup')?.remove()">
+        onkeydown="if(event.key==='Enter'&&!event.isComposing)saveRmAddTaskForKr('${krId}');if(event.key==='Escape')document.getElementById('rm-task-add-popup')?.remove()">
     </div>
     <div style="margin-bottom:14px">
       <label style="font-size:11px;color:var(--text-muted);display:block;margin-bottom:4px">期日（任意）</label>
@@ -6808,7 +7995,7 @@ function rmAddPtaskAtDate(e, dateStr) {
     </div>
     <div class="gcal-popup-body">
       <input id="rta-title" class="gcal-title-input" placeholder="タスク名を入力..."
-        onkeydown="if(event.key==='Enter')saveRmAddPtaskFromPopup();if(event.key==='Escape')document.getElementById('rm-task-add-popup')?.remove()">
+        onkeydown="if(event.key==='Enter'&&!event.isComposing)saveRmAddPtaskFromPopup();if(event.key==='Escape')document.getElementById('rm-task-add-popup')?.remove()">
       <input class="rta-kr-selected" type="hidden" value="${projects[0]?.id||''}">
       <input id="rta-date" type="hidden" value="${dateStr}">
       <div class="gcal-field-label">プロジェクト</div>
@@ -6897,7 +8084,7 @@ function rmAddTaskAtDate(e, dateStr) {
     </div>
     <div class="gcal-popup-body">
       <input id="rta-title" class="gcal-title-input" placeholder="タスク名を入力..."
-        onkeydown="if(event.key==='Enter')saveRmAddTaskFromPopup();if(event.key==='Escape')document.getElementById('rm-task-add-popup')?.remove()">
+        onkeydown="if(event.key==='Enter'&&!event.isComposing)saveRmAddTaskFromPopup();if(event.key==='Escape')document.getElementById('rm-task-add-popup')?.remove()">
       <input class="rta-kr-selected" type="hidden" value="${krs[0]?.id||''}">
       <input id="rta-date" type="hidden" value="${dateStr}">
       <div class="gcal-field-label">KR</div>
@@ -6931,19 +8118,48 @@ function saveRmAddTaskFromPopup() {
   renderAll();
 }
 
+function rmAutoResize(ta) {
+  if (!ta) return;
+  ta.style.height = 'auto';
+  ta.style.height = ta.scrollHeight + 'px';
+}
+function updateRmHorizonPreview(key) {
+  const ta = document.getElementById('rmg-' + key);
+  const pr = document.getElementById('rmhp-' + key);
+  if (!ta || !pr) return;
+  const val = ta.value.trim();
+  pr.textContent = val || '未設定';
+  pr.classList.toggle('empty', !val);
+}
+function toggleRmHorizon(key) {
+  const card = document.getElementById('rmhc-' + key);
+  if (!card) return;
+  const wasOpen = card.classList.contains('open');
+  ['month','quarter','half','year'].forEach(k => document.getElementById('rmhc-'+k)?.classList.remove('open'));
+  if (!wasOpen) {
+    card.classList.add('open');
+    const ta = document.getElementById('rmg-' + key);
+    if (ta) {
+      setTimeout(() => { ta.focus(); rmAutoResize(ta); }, 30);
+      setTimeout(() => rmAutoResize(ta), 280); // transition完了後に再計算
+    }
+  }
+}
+
 function loadRmGoals() {
   const saved = localStorage.getItem('lft_rmgoals');
   const g = saved ? JSON.parse(saved) : {};
   const wk = document.getElementById('rmg-week');
+  if (wk) { wk.value = g.week || ''; rmAutoResize(wk); }
   const mo = document.getElementById('rmg-month');
   const qu = document.getElementById('rmg-quarter');
   const ha = document.getElementById('rmg-half');
   const yr = document.getElementById('rmg-year');
-  if (wk) wk.value = g.week || '';
   if (mo) mo.value = g.month || '';
   if (qu) qu.value = g.quarter || '';
   if (ha) ha.value = g.half || '';
   if (yr) yr.value = g.year || '';
+  ['month','quarter','half','year'].forEach(k => updateRmHorizonPreview(k));
   // 折りたたみ状態を復元（セクション全体）
   if (localStorage.getItem('lft_rmgoals_collapsed') === '1') {
     const wrap = document.getElementById('rm-goals-wrap');
@@ -6951,14 +8167,6 @@ function loadRmGoals() {
     if (wrap) wrap.classList.add('collapsed');
     if (btn) { btn.classList.add('collapsed'); btn.innerHTML = '<span class="toggle-icon">▾</span> 展開'; }
   }
-  // 各行の折りたたみ状態を復元
-  const rowStates = JSON.parse(localStorage.getItem('lft_rmgoals_rows') || '{}');
-  ['week','month','quarter','half','year'].forEach(key => {
-    if (rowStates[key]) {
-      const row = document.getElementById('rmgrow-' + key);
-      if (row) row.classList.add('collapsed');
-    }
-  });
   lucide.createIcons();
 }
 function toggleRmGoals() {
@@ -7397,7 +8605,10 @@ function renderRoadmap() {
           grp += `<div class="rm-item rm-item-task rm-item-col" style="background:${pc}14;border-color:${pc}55;color:${pc};${doneStyle};cursor:grab"
             onmousedown="rmStartDrag(event,'${item.type}','${item.id}','${item.date}')"
             ondblclick="rmEditTask('${item.type}','${parentId}','${item.id}',event)">
-            <span class="rm-text" style="flex:1;white-space:normal;word-break:break-word">${item.done ? '✓ ' : ''}${esc(item.title)}</span>
+            <span class="rm-task-check${item.done ? ' checked' : ''}"
+              onmousedown="event.stopPropagation()"
+              onclick="event.stopPropagation();rmToggleTask('${item.type}','${parentId}','${item.id}')">${item.done ? '✓' : ''}</span>
+            <span class="rm-text" style="flex:1;white-space:normal;word-break:break-word">${esc(item.title)}</span>
           </div>`;
         } else {
           grp += `<div class="rm-item rm-item-task rm-item-col" style="background:${c.bg};border-color:${c.border};color:${c.text}"
@@ -7577,18 +8788,19 @@ function renderPomodoro() {
   if (!root) return;
   const total = (_pomMode === 'work' ? _pomWorkMins : _pomBreakMins) * 60;
   const pct = 1 - (_pomSecsLeft / total);
-  const R = 33; const C = 2 * Math.PI * R;
+  const R = 57; const C = 2 * Math.PI * R;
   const isWork = _pomMode === 'work';
   const accent = isWork ? '#6366f1' : '#10b981';
   const mins = Math.floor(_pomSecsLeft / 60);
   const secs = _pomSecsLeft % 60;
   const timeStr = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
   root.innerHTML = `<div class="pom-card">
-    <div class="pom-top">
+    <div class="pom-label">ポモドーロタイマー</div>
+    <div class="pom-ring-section">
       <div class="pom-ring-wrap">
-        <svg class="pom-ring-svg" viewBox="0 0 84 84">
-          <circle cx="42" cy="42" r="${R}" fill="none" stroke="var(--border)" stroke-width="5"/>
-          <circle cx="42" cy="42" r="${R}" fill="none" stroke="${accent}" stroke-width="5"
+        <svg class="pom-ring-svg" viewBox="0 0 140 140">
+          <circle cx="70" cy="70" r="${R}" fill="none" stroke="var(--border)" stroke-width="7"/>
+          <circle cx="70" cy="70" r="${R}" fill="none" stroke="${accent}" stroke-width="7"
             stroke-dasharray="${C * pct} ${C}" stroke-dashoffset="${C * 0.25}"
             stroke-linecap="round"/>
         </svg>
@@ -7597,15 +8809,15 @@ function renderPomodoro() {
           <div class="pom-mode-label">${isWork ? '🍅 集中' : '☕ 休憩'}</div>
         </div>
       </div>
-      <div class="pom-right">
-        <div class="pom-session-row">${_pomSessions > 0 ? `🍅 ${_pomSessions} セッション完了` : 'ポモドーロタイマー'}</div>
-        <button class="pom-btn-main" style="background:${accent}" onclick="pomodoroToggle()">
-          ${_pomRunning ? '⏸ 一時停止' : '▶ スタート'}
-        </button>
-        <div class="pom-sub-row">
-          <button class="pom-btn-sub" onclick="pomodoroReset()" title="リセット">↺ リセット</button>
-          <button class="pom-btn-sub" onclick="pomodoroSkip()" title="スキップ">⏭ スキップ</button>
-        </div>
+      <div class="pom-session-row">${_pomSessions > 0 ? `🍅 ${_pomSessions} セッション完了` : ''}</div>
+    </div>
+    <div class="pom-controls">
+      <button class="pom-btn-main" style="background:${accent}" onclick="pomodoroToggle()">
+        ${_pomRunning ? '⏸ 一時停止' : '▶ スタート'}
+      </button>
+      <div class="pom-sub-row">
+        <button class="pom-btn-sub" onclick="pomodoroReset()" title="リセット">↺ リセット</button>
+        <button class="pom-btn-sub" onclick="pomodoroSkip()" title="スキップ">⏭ スキップ</button>
       </div>
     </div>
     <div class="pom-time-row">
@@ -8116,6 +9328,12 @@ function completeDaily(questId, btn) {
   const skill = qd.skills.find(s => s.id === q.skillId);
   if (skill) skill.bonusXp = (skill.bonusXp || 0) + q.xpReward;
 
+  // Habit integration (from main tab)
+  if (q.habitId) {
+    const h = (state.habits||[]).find(h => h.id === q.habitId);
+    if (h) { if (!h.logs) h.logs={}; if (!h.logs[todayStr]) h.logs[todayStr]=true; save('habits'); }
+  }
+
   // Check weekly bonus
   checkAndAwardWeeklyBonus(qd);
   saveQuestData(qd);
@@ -8126,10 +9344,20 @@ function completeDaily(questId, btn) {
   const inLevelAfter = xpLevel(totalXpAfter).inLevel;
   if (lvAfter > lvBefore) showLevelUpEffect(lvBefore, lvAfter);
 
-  showXpPopup(btn, q.xpReward);
+  // Enhanced XP popup with skill color + particles
+  const skillMeta = qd.skills.find(s => s.id === q.skillId) || {};
+  showXpPopupV2(btn, q.xpReward, skillMeta.name, skillMeta.color);
   playCompleteSound();
   renderQuest();
+  if (window._qspOpen) renderQuestSidePanel();
+  // Refresh dashboard if visible (quest widget needs updating)
+  if (document.getElementById('dashboard-root') && document.getElementById('dashboard-root').offsetParent) renderDashboard();
   if (window.lucide) lucide.createIcons();
+
+  // Check focus quest completion milestone
+  const focusQuests = getTodayFocusQuests(qd, todayStr);
+  const focusDone = focusQuests.filter(fq => (fq.completedDates||[]).includes(todayStr)).length;
+  if (focusDone >= 3 && focusQuests.some(fq => fq.id === questId)) showFocusCompleteFlash(focusDone);
 
   // XPバーをじわじわアニメーション
   const cls = getClassDef(lvAfter);
@@ -8155,7 +9383,8 @@ function completeChallenge(chalId, btn) {
   const inLevelAfter = xpLevel(totalXpAfter).inLevel;
   if (lvAfter > lvBefore) showLevelUpEffect(lvBefore, lvAfter);
 
-  showXpPopup(btn, ch.xpReward);
+  const skillMeta2 = qd.skills.find(s => s.id === ch.skillId) || {};
+  showXpPopupV2(btn, ch.xpReward, skillMeta2.name, skillMeta2.color);
   playCompleteSound();
   renderQuest();
   if (window.lucide) lucide.createIcons();
@@ -8194,6 +9423,91 @@ function openQuestManager() {
   saveQuestData(qd);
   renderQuest();
   if (window.lucide) lucide.createIcons();
+}
+
+// ── TODAY'S FOCUS QUEST SYSTEM (3-pick per day) ────────────────────────────
+function getTodayFocusQuests(qd, todayStr) {
+  const rerollKey = 'lft_focus_reroll_' + todayStr;
+  const rerollCount = parseInt(localStorage.getItem(rerollKey) || '0');
+  const cacheKey = 'lft_focus_' + todayStr + '_r' + rerollCount;
+
+  const stored = localStorage.getItem(cacheKey);
+  if (stored) {
+    try {
+      const ids = JSON.parse(stored);
+      const mapped = ids.map(id => qd.dailyQuests.find(q => q.id === id)).filter(Boolean);
+      if (mapped.length >= 1) return mapped;
+    } catch(e) {}
+  }
+
+  // Seeded deterministic shuffle based on date + reroll count
+  const dateNum = parseInt(todayStr.replace(/-/g, '')) + rerollCount * 997;
+  const seededRnd = n => { const x = Math.sin(dateNum * 9301 + n * 49297 + 233) * 1000; return Math.abs(x - Math.floor(x)); };
+
+  const withRand = qd.dailyQuests.map((q, i) => ({
+    q,
+    done: (q.completedDates||[]).includes(todayStr),
+    rand: seededRnd(i * 37 + 11)
+  }));
+  // Sort: incomplete first (prefer variety), within that by random
+  withRand.sort((a, b) => (a.done !== b.done) ? (a.done ? 1 : -1) : a.rand - b.rand);
+
+  // Pick 3 with skill diversity
+  const picked = []; const usedSkills = new Set();
+  for (const item of withRand) { if (picked.length >= 3) break; if (!usedSkills.has(item.q.skillId)) { picked.push(item.q); usedSkills.add(item.q.skillId); } }
+  for (const item of withRand) { if (picked.length >= 3) break; if (!picked.includes(item.q)) picked.push(item.q); }
+
+  localStorage.setItem(cacheKey, JSON.stringify(picked.map(q => q.id)));
+  return picked;
+}
+
+function rerollFocusQuests() {
+  const todayStr = today();
+  const rerollKey = 'lft_focus_reroll_' + todayStr;
+  localStorage.setItem(rerollKey, String(parseInt(localStorage.getItem(rerollKey)||'0') + 1));
+  renderQuest();
+  if (document.getElementById('dashboard-root')) renderDashboard();
+}
+
+// ── ENHANCED XP POPUP WITH PARTICLES ───────────────────────────────────────
+function showXpPopupV2(el, xp, skillName, skillColor) {
+  const rect = el.getBoundingClientRect();
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height / 2;
+  const color = skillColor || '#f59e0b';
+
+  // Main popup
+  const popup = document.createElement('div');
+  popup.className = 'xp-popup-v2';
+  popup.style.cssText = `left:${cx - 30}px;top:${cy - 10}px;--xp-c:${color}`;
+  popup.innerHTML = `<span class="xp-num">+${xp} XP</span><span class="xp-skill">${skillName||'XP獲得'}</span>`;
+  document.body.appendChild(popup);
+  setTimeout(() => popup.remove(), 1500);
+
+  // Particle burst
+  const count = 8;
+  for (let i = 0; i < count; i++) {
+    const angle = (i / count) * Math.PI * 2;
+    const dist = 28 + Math.random() * 20;
+    const tx = `translateX(${Math.cos(angle) * dist}px)`;
+    const ty = `translateY(${Math.sin(angle) * dist}px)`;
+    const p = document.createElement('div');
+    p.className = 'xp-particle';
+    p.style.cssText = `left:${cx - 2.5}px;top:${cy - 2.5}px;background:${color};--tx:${tx};--ty:${ty};animation-delay:${i * 0.03}s`;
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 900);
+  }
+}
+
+function showFocusCompleteFlash(count) {
+  if (document.querySelector('.focus-complete-banner')) return;
+  const msgs = ['', '', '', '🎯 今日のフォーカス クリア！ +ボーナス XP！'];
+  const msg = msgs[count] || `⚔️ フォーカス ${count}/3 完了！`;
+  const el = document.createElement('div');
+  el.className = 'focus-complete-banner';
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 2600);
 }
 
 function renderQuest() {
@@ -8238,14 +9552,36 @@ function renderQuest() {
     </div>`;
   }).join('');
 
-  // Daily quests
+  // ── Today's Focus (3-pick) ──
+  const focusQuests = getTodayFocusQuests(qd, todayStr);
+  const focusIds = new Set(focusQuests.map(q => q.id));
+  const focusDoneCount = focusQuests.filter(q => q.completedDates.includes(todayStr)).length;
+  const allFocusDone = focusDoneCount >= focusQuests.length;
+  const focusCheckSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+  const focusHtml = focusQuests.map(q => {
+    const isDone = q.completedDates.includes(todayStr);
+    const skill = qd.skills.find(s => s.id === q.skillId) || DEFAULT_SKILLS[0];
+    return `<div class="quest-item${isDone ? ' done' : ''}" style="border-left:3px solid ${skill.color}40;padding-left:10px">
+      <button class="quest-item-check" onclick="completeDaily('${q.id}',this)" ${isDone ? 'disabled' : ''}>${focusCheckSvg}</button>
+      <div class="quest-item-body">
+        <div class="quest-item-title">${esc(q.title)}</div>
+        <span class="quest-item-skill-tag" style="background:${skill.color}18;color:${skill.color}">
+          <i data-lucide="${skill.icon}" style="width:9px;height:9px"></i>${skill.name}
+        </span>
+      </div>
+      <span class="quest-xp-reward">+${q.xpReward} XP</span>
+    </div>`;
+  }).join('');
+
+  // Daily quests (all — collapsible)
   const dailyHtml = qd.dailyQuests.map(q => {
     const isDone = q.completedDates.includes(todayStr);
     const skill = qd.skills.find(s => s.id === q.skillId) || DEFAULT_SKILLS[0];
-    return `<div class="quest-item${isDone ? ' done' : ''}">
+    const isFocus = focusIds.has(q.id);
+    return `<div class="quest-item${isDone ? ' done' : ''}" ${isFocus ? 'style="opacity:0.5"' : ''}>
       <button class="quest-item-check" onclick="completeDaily('${q.id}',this)" ${isDone ? 'disabled' : ''}>${checkSvg}</button>
       <div class="quest-item-body">
-        <div class="quest-item-title">${esc(q.title)}</div>
+        <div class="quest-item-title">${esc(q.title)}${isFocus ? ' <span style="font-size:9px;opacity:0.6">★フォーカス</span>' : ''}</div>
         <span class="quest-item-skill-tag" style="background:${skill.color}18;color:${skill.color}">
           <i data-lucide="${skill.icon}" style="width:9px;height:9px"></i>${skill.name}
         </span>
@@ -8412,11 +9748,65 @@ function renderQuest() {
       </div>
     </div>
 
-    <div class="quest-daily-header">
-      <span class="quest-section-title" style="margin:0"><i data-lucide="sun" style="width:12px;height:12px;color:#f59e0b"></i> デイリークエスト</span>
-      <span class="quest-reset-badge">リセットまで ${hrsLeft}h${minsLeft}m</span>
+    <!-- TODAY'S FOCUS: BIG HERO -->
+    ${(() => {
+      const totalFocusXp = focusQuests.reduce((s,q) => s + q.xpReward, 0);
+      const focusHeroItems = focusQuests.map(q => {
+        const isDone = q.completedDates.includes(todayStr);
+        const skill = qd.skills.find(s => s.id === q.skillId) || DEFAULT_SKILLS[0];
+        return `<div class="qf-item${isDone?' done':''}">
+          <button class="qf-check" onclick="completeDaily('${q.id}',this)" ${isDone?'disabled':''}>${isDone?focusCheckSvg:''}</button>
+          <div class="qf-body">
+            <div class="qf-title">${esc(q.title)}</div>
+            <span class="qf-skill" style="background:${skill.color}16;color:${skill.color}">
+              <i data-lucide="${skill.icon}" style="width:9px;height:9px"></i>${skill.name}
+            </span>
+          </div>
+          <span class="qf-xp">+${q.xpReward}</span>
+        </div>`;
+      }).join('');
+      const dotsHtml = focusQuests.map((_, i) => {
+        const cls = i < focusDoneCount ? 'done' : i === focusDoneCount ? 'next' : 'fpd-empty';
+        return `<span class="fpd ${cls}"></span>`;
+      }).join('');
+      return `<div class="focus-hero">
+        <div class="focus-hero-gradient">
+          <div class="focus-hero-hd">
+            <div>
+              <div class="focus-hero-eyebrow">TODAY'S MISSION</div>
+              <div class="focus-hero-title">今日のフォーカス</div>
+            </div>
+            <div class="focus-hero-right">
+              <div class="focus-prog-dots">${dotsHtml}</div>
+              <div class="focus-prog-label">${focusDoneCount} / ${focusQuests.length} クリア</div>
+              <button class="focus-reroll-btn" onclick="rerollFocusQuests()">🎲 再抽選</button>
+            </div>
+          </div>
+          <div class="qf-items">${focusHeroItems}</div>
+          ${allFocusDone ? `<div class="focus-done-banner">🎉 今日のミッション全クリア！</div>` : ''}
+        </div>
+        <div class="focus-hero-footer">
+          <span class="focus-xp-total">⚡ 最大 +${totalFocusXp} XP 獲得可能</span>
+        </div>
+      </div>`;
+    })()}
+
+    <!-- ALL QUESTS: collapsible -->
+    <div style="margin-top:18px">
+      <div class="quest-daily-header" style="cursor:pointer;user-select:none"
+           onclick="(function(el){var b=document.getElementById('all-quests-body');var ch=el.querySelector('.aq-chevron');var c=b.style.display==='none';b.style.display=c?'':'none';ch.style.transform=c?'':'rotate(-90deg)'})(this)">
+        <span class="quest-section-title" style="margin:0;display:flex;align-items:center;gap:6px">
+          <i data-lucide="sun" style="width:12px;height:12px;color:#f59e0b"></i>
+          全クエスト
+          <span style="font-size:10px;font-weight:600;color:var(--text-muted)">(${qd.dailyQuests.length}件)</span>
+          <span class="aq-chevron" style="font-size:11px;transition:transform .2s">▾</span>
+        </span>
+        <span class="quest-reset-badge">リセットまで ${hrsLeft}h${minsLeft}m</span>
+      </div>
+      <div id="all-quests-body" style="display:none">
+        <div class="quest-list">${dailyHtml}</div>
+      </div>
     </div>
-    <div class="quest-list">${dailyHtml}</div>
 
     <div class="quest-section-title" style="margin-top:24px"><i data-lucide="trophy" style="width:12px;height:12px;color:#f59e0b"></i> チャレンジ</div>
     <div class="quest-challenge-list">${chalHtml}</div>
@@ -9007,13 +10397,22 @@ const NEWS_CAT_META = {
   ent:     { label: 'Entertainment',    color: '#f59e0b' },
 };
 
-const FALLBACK_IMGS = {
-  tech:    i => `https://picsum.photos/seed/tech${i}kai/600/400`,
-  sns:     i => `https://picsum.photos/seed/sns${i}kai/600/400`,
-  biz:     i => `https://picsum.photos/seed/biz${i}kai/600/400`,
-  culture: i => `https://picsum.photos/seed/culture${i}kai/600/400`,
-  ent:     i => `https://picsum.photos/seed/ent${i}kai/600/400`,
+// Category gradient thumbnails (replaces Picsum / OGP lazy-fetch)
+const CAT_THUMB = {
+  tech:    { grad:'linear-gradient(135deg,#0f172a 0%,#1e3a8a 55%,#3b82f6 100%)', emoji:'🤖' },
+  sns:     { grad:'linear-gradient(135deg,#4c0519 0%,#9d174d 55%,#ec4899 100%)', emoji:'📣' },
+  biz:     { grad:'linear-gradient(135deg,#022c22 0%,#065f46 55%,#10b981 100%)', emoji:'💼' },
+  culture: { grad:'linear-gradient(135deg,#2e1065 0%,#581c87 55%,#a855f7 100%)', emoji:'🎬' },
+  ent:     { grad:'linear-gradient(135deg,#451a03 0%,#92400e 55%,#f59e0b 100%)', emoji:'🎉' },
 };
+function newsCatThumbHtml(cat) {
+  const ct = CAT_THUMB[cat] || { grad:'linear-gradient(135deg,#1c1c2e,#2d2d44)', emoji:'📰' };
+  return `<div class="news-cat-thumb" style="background:${ct.grad}"><span class="nct-emoji">${ct.emoji}</span></div>`;
+}
+function newsCatThumbFallback(img, cat) {
+  const wrap = img.closest('.news-thumb');
+  if (wrap) wrap.innerHTML = newsCatThumbHtml(cat);
+}
 
 const NEWS_CACHE_KEY = 'lft_news_cache_v2';
 const NEWS_TS_KEY = 'lft_news_ts_v2';
@@ -9037,8 +10436,14 @@ function _stripHtml(html) {
   return tmp.textContent || tmp.innerText || '';
 }
 function _extractImg(html) {
-  const m = (html||'').match(/<img[^>]+src=["']([^"']+)["']/i);
-  return m ? m[1] : '';
+  if (!html) return '';
+  // src属性（http/https限定）
+  const m = (html).match(/<img[^>]+src=["'](https?:[^"']+)["']/i);
+  if (m) return m[1];
+  // srcsetの最初のURL
+  const ms = (html).match(/<img[^>]+srcset=["'](https?:[^"',\s]+)/i);
+  if (ms) return ms[1];
+  return '';
 }
 function _timeAgo(date) {
   const diff = (Date.now() - new Date(date).getTime()) / 1000;
@@ -9055,15 +10460,25 @@ async function _fetchOneFeed(feed) {
     clearTimeout(timer);
     const data = await res.json();
     if (data.status !== 'ok') return [];
-    return (data.items || []).slice(0, 5).map(item => ({
-      title: item.title || '',
-      link: item.link || '',
-      excerpt: _stripHtml(item.description || '').slice(0, 150),
-      date: item.pubDate || '',
-      source: feed.source,
-      category: feed.category,
-      thumbnail: item.thumbnail || (item.enclosure && item.enclosure.link) || _extractImg(item.description || item.content || ''),
-    })).filter(a => a.title);
+    return (data.items || []).slice(0, 5).map(item => {
+      // 画像抽出: thumbnail → enclosure(image) → content内img → description内img の順
+      const encImg = (item.enclosure?.type || '').startsWith('image') ? item.enclosure.link : null;
+      const contentImg = _extractImg(item.content || '');
+      const descImg = _extractImg(item.description || '');
+      const thumb = item.thumbnail || encImg || contentImg || descImg || null;
+      // 記事IDを生成（DOM更新用）
+      const aid = btoa(encodeURIComponent(item.link || item.title || '')).replace(/[^a-zA-Z0-9]/g,'').slice(0,20);
+      return {
+        title: item.title || '',
+        link: item.link || '',
+        excerpt: _stripHtml(item.description || '').slice(0, 150),
+        date: item.pubDate || '',
+        source: feed.source,
+        category: feed.category,
+        thumbnail: thumb,
+        aid,
+      };
+    }).filter(a => a.title);
   } catch(e) { clearTimeout(timer); return []; }
 }
 
@@ -9086,19 +10501,19 @@ function _generateSummary(articles) {
   const ent  = byCategory.ent     || [];
 
   const CAT_DEF = [
-    { key:'tech',    list:tech, emoji:'🤖', label:'TECH / AI',    taglines:[
+    { key:'tech',    list:tech, emoji:'🤖', label:'TECH / AI',    color:'#3b82f6', taglines:[
       'AIの実装・リスク管理で動き活発','AIツールの活用と規制の両面が進行中','開発現場とAI倫理の議論が加速'
     ]},
-    { key:'sns',     list:sns,  emoji:'📣', label:'MARKETING',    taglines:[
+    { key:'sns',     list:sns,  emoji:'📣', label:'MARKETING',    color:'#ec4899', taglines:[
       'ブランド設計・顧客接点の再考が進む','SNSとコンテンツ戦略に注目が集まる','デジタルマーケの打ち手が多様化'
     ]},
-    { key:'biz',     list:biz,  emoji:'💼', label:'BUSINESS',     taglines:[
+    { key:'biz',     list:biz,  emoji:'💼', label:'BUSINESS',     color:'#10b981', taglines:[
       'AI投資と事業判断の連動が加速','経営層のテック活用戦略が鮮明に','スタートアップ〜大企業でシフト加速'
     ]},
-    { key:'culture', list:cul,  emoji:'🎬', label:'CULTURE',      taglines:[
+    { key:'culture', list:cul,  emoji:'🎬', label:'CULTURE',      color:'#a855f7', taglines:[
       'テクノロジーと生活の接点が拡大','消費者の行動変容が各業界に波及','カルチャー×テックの融合が加速中'
     ]},
-    { key:'ent',     list:ent,  emoji:'🎉', label:'ENTERTAINMENT',taglines:[
+    { key:'ent',     list:ent,  emoji:'🎉', label:'ENTERTAINMENT',color:'#f59e0b', taglines:[
       'エンタメ業界の話題が盛り上がる','映画・音楽・スポーツで注目ニュース','コンテンツ消費トレンドに変化の兆し'
     ]},
   ];
@@ -9106,22 +10521,26 @@ function _generateSummary(articles) {
   const cards = CAT_DEF.filter(c => c.list.length).map(c => {
     const tagline = c.taglines[Math.floor(Date.now() / 86400000) % c.taglines.length];
     const top = c.list[0].title;
-    return `<div class="briefing-item">
-      <div class="briefing-item-head">${c.emoji} <span class="briefing-cat ${c.key}">${c.label}</span></div>
+    return `<div class="briefing-item" style="--bc:${c.color}">
+      <div class="briefing-item-head"><span>${c.emoji}</span> <span class="briefing-cat ${c.key}">${c.label}</span><span class="briefing-count">${c.list.length}本</span></div>
       <div class="briefing-tagline">${tagline}</div>
       <div class="briefing-headline">${top}</div>
     </div>`;
   }).join('');
 
-  // 示唆：取得できたカテゴリに応じて構築
-  const insightParts = [];
-  if (tech.length) insightParts.push('AIリスク＆ROIは商談の鉄板ネタ');
-  if (sns.length)  insightParts.push('マーケ刷新の提案タイミングが来ている');
-  if (biz.length)  insightParts.push('経営層へのAI投資判断材料として使える');
-  if (cul.length)  insightParts.push('消費者トレンドを提案の入口にできる');
-  if (ent.length)  insightParts.push('エンタメネタはアイスブレイクに最適');
-  const insight = insightParts.length
-    ? `<div class="briefing-insight"><strong>💡 示唆</strong>${insightParts.join('。')}。計${articles.length}本収集。</div>`
+  // 示唆チップ
+  const chips = [];
+  if (tech.length) chips.push('AIリスク＆ROIは商談の鉄板ネタ');
+  if (sns.length)  chips.push('マーケ提案のタイミング来てる');
+  if (biz.length)  chips.push('経営層への投資判断材料になる');
+  if (cul.length)  chips.push('消費者トレンドを提案に活かせる');
+  if (ent.length)  chips.push('アイスブレイクに使えるネタあり');
+  const insight = chips.length
+    ? `<div class="briefing-insight">
+         <span class="briefing-insight-label">💡 示唆</span>
+         ${chips.map(t=>`<span class="briefing-insight-chip">${t}</span>`).join('')}
+         <span class="briefing-insight-total">計${articles.length}本</span>
+       </div>`
     : '';
 
   return `<div class="briefing-grid">${cards}</div>${insight}`;
@@ -9139,14 +10558,11 @@ function _renderNewsCards(articles) {
     : articles.map((a, i) => {
         const size = _getCardSize(i);
         const col = NEWS_CAT_META[a.category]?.color || '#e85d26';
-        catCounter[a.category] = (catCounter[a.category] || 0) + 1;
-        const idx = catCounter[a.category];
-        const imgSrc = a.thumbnail || (FALLBACK_IMGS[a.category]?.(idx) || '');
-        const thumbHtml = imgSrc
-          ? `<div class="news-thumb"><img src="${imgSrc}" alt="" loading="lazy" onerror="this.parentElement.classList.add('no-img');this.remove()"></div>`
-          : `<div class="news-thumb no-img" style="height:80px"></div>`;
+        const thumbHtml = a.thumbnail
+          ? `<div class="news-thumb"><img src="${a.thumbnail}" alt="" loading="lazy" onerror="newsCatThumbFallback(this,'${a.category}')"></div>`
+          : `<div class="news-thumb">${newsCatThumbHtml(a.category)}</div>`;
         return `<a class="news-card ${size}" href="${a.link}" target="_blank" rel="noopener"
-            style="--nc:${col};animation-delay:${i*0.05}s">
+            data-aid="${a.aid||''}" style="--nc:${col};animation-delay:${i*0.05}s">
           ${thumbHtml}
           <div class="news-card-body">
             <div class="news-card-category">${NEWS_CAT_META[a.category]?.label || a.category}</div>
@@ -9170,6 +10586,90 @@ function _renderNewsCards(articles) {
     </div>
     <div class="news-grid">${cardsHtml}</div>
   `;
+
+}
+
+// ── OG IMAGE LAZY FETCH ──
+const _OG_CACHE_KEY = 'lft_og_img_cache';
+let _ogCache = null;
+let _ogFetchTimer = null;
+
+function _loadOgCache() {
+  if (_ogCache) return _ogCache;
+  try { _ogCache = JSON.parse(localStorage.getItem(_OG_CACHE_KEY) || '{}'); }
+  catch(e) { _ogCache = {}; }
+  return _ogCache;
+}
+function _saveOgCache() {
+  try {
+    // 最大200件に制限
+    const entries = Object.entries(_ogCache);
+    if (entries.length > 200) _ogCache = Object.fromEntries(entries.slice(-200));
+    localStorage.setItem(_OG_CACHE_KEY, JSON.stringify(_ogCache));
+  } catch(e) {}
+}
+
+function _queueOgFetch(articles) {
+  // キャッシュ済みはすぐ反映、未取得のみフェッチ
+  const cache = _loadOgCache();
+  const toFetch = [];
+  articles.forEach(a => {
+    if (cache[a.link]) {
+      _applyOgImage(a.aid, cache[a.link]);
+    } else {
+      toFetch.push(a);
+    }
+  });
+  if (toFetch.length) {
+    let i = 0;
+    function next() {
+      if (i >= toFetch.length) return;
+      const a = toFetch[i++];
+      _fetchOgImage(a.link).then(img => {
+        if (img) {
+          _ogCache[a.link] = img;
+          _saveOgCache();
+          _applyOgImage(a.aid, img);
+        }
+        setTimeout(next, 350); // スロットル
+      });
+    }
+    setTimeout(next, 200);
+  }
+}
+
+async function _fetchOgImage(url) {
+  try {
+    // allorigins.win で記事HTMLを取得し og:image を抽出
+    const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+    const res = await fetch(proxy, { signal: AbortSignal.timeout(8000) });
+    if (!res.ok) return null;
+    const data = await res.json();
+    const html = data.contents || '';
+    // og:image または twitter:image を探す
+    const patterns = [
+      /property=["']og:image["'][^>]*content=["'](https?:[^"']+)["']/i,
+      /content=["'](https?:[^"']+)["'][^>]*property=["']og:image["']/i,
+      /name=["']twitter:image["'][^>]*content=["'](https?:[^"']+)["']/i,
+      /content=["'](https?:[^"']+)["'][^>]*name=["']twitter:image["']/i,
+    ];
+    for (const p of patterns) {
+      const m = html.match(p);
+      if (m && m[1]) return m[1];
+    }
+    return null;
+  } catch(e) { return null; }
+}
+
+function _applyOgImage(aid, imgUrl) {
+  if (!aid || !imgUrl) return;
+  const card = document.querySelector(`.news-card[data-aid="${aid}"]`);
+  if (!card) return;
+  const wrap = card.querySelector('.news-thumb');
+  if (!wrap || !wrap.classList.contains('no-img')) return;
+  wrap.classList.remove('no-img');
+  wrap.style.removeProperty('height');
+  wrap.innerHTML = `<img src="${imgUrl}" alt="" loading="lazy" onerror="this.parentElement.classList.add('no-img');this.remove()">`;
 }
 
 function _renderNewsFilters(articles) {
@@ -9259,6 +10759,18 @@ updateNorthStar();
 initTabDrag();
 initFirebase();
 initDiaryShortcuts();
+// Restore diary view mode toggle button state
+(function() {
+  const saved = localStorage.getItem('diaryViewMode') || 'card';
+  document.querySelectorAll('.diary-view-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.mode === saved);
+  });
+})();
+// Hide float toolbar and slash menu on outside click
+document.addEventListener('mousedown', e => {
+  if (_floatToolbarEl && !_floatToolbarEl.contains(e.target)) hideFloatToolbar();
+  if (_slashMenuEl && !_slashMenuEl.contains(e.target)) hideSlashMenu();
+}, true);
 initTabLabels();
 // Lucide icons for static HTML (tabs, header, modals)
 if (document.readyState === 'loading') {
@@ -9272,6 +10784,295 @@ document.querySelectorAll('input, textarea').forEach(el => {
   el.setAttribute('autocorrect', 'off');
   el.setAttribute('autocapitalize', 'off');
 });
+
+// ── ADD DIARY ENTRY ──
+function toggleDiaryAddMenu(e) {
+  e.stopPropagation();
+  const menu = document.getElementById('diary-add-menu');
+  if (!menu) return;
+  const isOpen = menu.style.display !== 'none';
+  menu.style.display = isOpen ? 'none' : 'block';
+  if (!isOpen) {
+    // close on next outside click
+    setTimeout(() => document.addEventListener('click', closeDiaryAddMenu, { once: true }), 0);
+  }
+}
+function closeDiaryAddMenu() {
+  const menu = document.getElementById('diary-add-menu');
+  if (menu) menu.style.display = 'none';
+}
+
+function addDiaryEntry(mode) {
+  closeDiaryAddMenu();
+  // 新しい日記エントリを作成
+  const newEntry = {
+    id: 'daily_' + Date.now(),
+    date: toLocalDateStr(new Date()),
+    title: '',
+    bodyMorning: '',
+    bodyNight: '',
+    mood: '',
+    createdAt: new Date().toISOString()
+  };
+  state.daily = state.daily || [];
+  state.daily.push(newEntry);
+  save('daily');
+
+  // 日記タブへ切り替え
+  const allTabIds = ['daily','work','job','life','goal','roadmap','quest','news'];
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.tab === 'daily');
+  });
+  allTabIds.forEach(t => {
+    const el = document.getElementById('tab-' + t);
+    if (el) el.classList.toggle('hidden', t !== 'daily');
+  });
+  window.scrollTo(0, 0);
+
+  if (mode === 'full') {
+    // フルページモードで開く
+    _diaryViewMode = 'card';
+    localStorage.setItem('diaryViewMode', 'card');
+    document.querySelectorAll('.diary-view-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.mode === 'card');
+    });
+    renderDaily();
+    setTimeout(() => openDiaryFullPage(newEntry.id), 30);
+  } else {
+    // サイドビューで開く（デフォルト）
+    _diaryViewMode = 'split';
+    localStorage.setItem('diaryViewMode', 'split');
+    document.querySelectorAll('.diary-view-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.mode === 'split');
+    });
+    _notionSelectedEntry = newEntry.id;
+    renderDailySplitView();
+    setTimeout(() => {
+      const titleEl = document.getElementById('split-title');
+      if (titleEl) titleEl.focus();
+    }, 60);
+  }
+}
+
+// ── QUEST SIDE PANEL ──
+let _qspOpen = false;
+
+function toggleQuestSidePanel() { _qspOpen ? closeQuestSidePanel() : openQuestSidePanel(); }
+
+function openQuestSidePanel() {
+  _qspOpen = true;
+  document.getElementById('quest-side-panel')?.classList.add('open');
+  document.getElementById('quest-panel-fab')?.classList.add('panel-open');
+  renderQuestSidePanel();
+}
+
+function closeQuestSidePanel() {
+  _qspOpen = false;
+  document.getElementById('quest-side-panel')?.classList.remove('open');
+  document.getElementById('quest-panel-fab')?.classList.remove('panel-open');
+}
+
+function renderQuestSidePanel() {
+  if (!_qspOpen) return;
+  const qd = loadQuestData();
+  const todayStr = today();
+
+  // XP bar
+  const totalXp = qd.skills.reduce((s,sk) => s + calcBaseXP(sk.id) + (sk.bonusXp||0), 0);
+  const effXp = Math.max(0, totalXp - (qd.xpOffset||0));
+  const lv = xpLevel(effXp);
+  const cls = getClassDef(lv.level);
+  const xpEl = document.getElementById('qsp-xp-wrap');
+  if (xpEl) xpEl.innerHTML = `
+    <div class="qsp-lv-row">
+      <span class="qsp-lv-num">Lv.${lv.level}</span>
+      <span class="qsp-lv-sub">Player</span>
+      <span class="qsp-cls-name">${cls.name}</span>
+    </div>
+    <div class="qsp-xp-bar"><div class="qsp-xp-fill" style="width:${lv.inLevel}%"></div></div>
+    <div class="qsp-xp-text">${lv.inLevel}/100 XP</div>`;
+
+  // Quest list
+  const done   = qd.dailyQuests.filter(q =>  q.completedDates.includes(todayStr));
+  const undone = qd.dailyQuests.filter(q => !q.completedDates.includes(todayStr));
+  const qSkillColor = id => DEFAULT_SKILLS.find(s => s.id === id)?.color || '#6366f1';
+  const isDefault   = id => !!DEFAULT_DAILY_QUESTS.find(q => q.id === id);
+
+  const renderQItem = (q, isDone) => {
+    const sc = qSkillColor(q.skillId);
+    const linked = q.habitId ? (state.habits||[]).find(h => h.id === q.habitId) : null;
+    const canDel = !isDefault(q.id);
+    return `<div class="qsp-item${isDone?' done':''}" id="qspi-${q.id}">
+      <div class="qsp-check" onclick="toggleQspItem('${q.id}')">${isDone?'✓':''}</div>
+      <div class="qsp-item-info">
+        <div class="qsp-item-title">${esc(q.title)}</div>
+        ${linked?`<div class="qsp-habit-link">🔗 ${esc(linked.title)}</div>`:''}
+      </div>
+      <span class="qsp-xp-badge" style="background:${sc}22;color:${sc}">+${q.xpReward}XP</span>
+      <div class="qsp-item-btns">
+        <button class="qsp-ibtn" onclick="showQuestSidePanelForm('${q.id}')" title="編集">✏️</button>
+        ${canDel?`<button class="qsp-ibtn del" onclick="deleteQspItem('${q.id}')" title="削除">🗑️</button>`:''}
+      </div>
+    </div>`;
+  };
+
+  const bodyEl = document.getElementById('qsp-body');
+  if (bodyEl) bodyEl.innerHTML =
+    `<div class="qsp-sec">📋 今日のクエスト (${done.length}/${qd.dailyQuests.length}完了)</div>` +
+    undone.map(q => renderQItem(q, false)).join('') +
+    (done.length ? `<div class="qsp-sec" style="margin-top:12px">✅ 完了済み</div>` + done.map(q => renderQItem(q, true)).join('') : '');
+}
+
+function toggleQspItem(questId) {
+  const qd = loadQuestData();
+  const todayStr = today();
+  const q = qd.dailyQuests.find(q => q.id === questId);
+  if (!q) return;
+
+  if (q.completedDates.includes(todayStr)) {
+    // Undo completion
+    q.completedDates = q.completedDates.filter(d => d !== todayStr);
+    const skill = qd.skills.find(s => s.id === q.skillId);
+    if (skill) skill.bonusXp = Math.max(0, (skill.bonusXp||0) - q.xpReward);
+    if (q.habitId) {
+      const h = (state.habits||[]).find(h => h.id === q.habitId);
+      if (h && h.logs) { delete h.logs[todayStr]; save('habits'); }
+    }
+    saveQuestData(qd);
+    renderQuestSidePanel();
+    if (window._dirtyTabs) _dirtyTabs.add('quest');
+  } else {
+    // Complete
+    const totalBefore = qd.skills.reduce((s,sk) => s+calcBaseXP(sk.id)+(sk.bonusXp||0),0);
+    const lvBefore = xpLevel(Math.max(0, totalBefore-(qd.xpOffset||0)));
+
+    q.completedDates.push(todayStr);
+    const skill = qd.skills.find(s => s.id === q.skillId);
+    if (skill) skill.bonusXp = (skill.bonusXp||0) + q.xpReward;
+
+    // ✅ Habit integration
+    if (q.habitId) {
+      const h = (state.habits||[]).find(h => h.id === q.habitId);
+      if (h) { if (!h.logs) h.logs={}; if (!h.logs[todayStr]) h.logs[todayStr]=true; save('habits'); }
+    }
+
+    checkAndAwardWeeklyBonus(qd);
+    saveQuestData(qd);
+    playCompleteSound();
+
+    const totalAfter = qd.skills.reduce((s,sk) => s+calcBaseXP(sk.id)+(sk.bonusXp||0),0);
+    const lvAfter = xpLevel(Math.max(0, totalAfter-(qd.xpOffset||0)));
+    if (lvAfter.level > lvBefore.level) showLevelUpEffect(lvBefore.level, lvAfter.level);
+
+    const el = document.getElementById('qspi-' + questId);
+    if (el) showXpPopup(el, q.xpReward);
+
+    renderQuestSidePanel();
+    if (window._dirtyTabs) _dirtyTabs.add('quest');
+  }
+}
+
+function deleteQspItem(questId) {
+  if (!confirm('このクエストを削除しますか？')) return;
+  const qd = loadQuestData();
+  qd.dailyQuests = qd.dailyQuests.filter(q => q.id !== questId);
+  saveQuestData(qd);
+  renderQuestSidePanel();
+}
+
+function showQuestSidePanelForm(editId) {
+  const qd = loadQuestData();
+  const q = editId ? qd.dailyQuests.find(dq => dq.id === editId) : null;
+  document.getElementById('qsp-add-btn').style.display = 'none';
+  const formEl = document.getElementById('qsp-form');
+  if (!formEl) return;
+
+  const xpOpts = [5, 10, 15, 20, 30, 50];
+  const selXp  = q?.xpReward || 20;
+  const skillOpts = DEFAULT_SKILLS.map(s =>
+    `<option value="${s.id}"${(q?.skillId||'sk_growth')===s.id?' selected':''}>${s.name}</option>`
+  ).join('');
+  const habitOpts = `<option value="">連動なし</option>` +
+    (state.habits||[]).map(h =>
+      `<option value="${h.id}"${q?.habitId===h.id?' selected':''}>${esc(h.title)}</option>`
+    ).join('');
+
+  formEl.style.display = 'flex';
+  formEl.innerHTML = `
+    <div>
+      <div class="qspf-label">クエスト名</div>
+      <input class="qspf-input" id="qspf-title" placeholder="例: 英語を30分勉強する" value="${esc(q?.title||'')}">
+    </div>
+    <div>
+      <div class="qspf-label">XP報酬</div>
+      <div class="qspf-xp-row">
+        ${xpOpts.map(x=>`<button class="qspf-xp-opt${x===selXp?' sel':''}" data-xp="${x}" onclick="qspSelectXp(${x})">${x}</button>`).join('')}
+      </div>
+    </div>
+    <div>
+      <div class="qspf-label">スキル</div>
+      <select class="qspf-select" id="qspf-skill">${skillOpts}</select>
+    </div>
+    <div>
+      <div class="qspf-label">🔗 習慣トラッカーと連動</div>
+      <select class="qspf-select" id="qspf-habit">${habitOpts}</select>
+    </div>
+    <div class="qspf-row-btns">
+      <button class="qspf-save" onclick="saveQspForm(${editId?`'${editId}'`:'null'})">${editId?'更新':'追加'}</button>
+      <button class="qspf-cancel" onclick="hideQuestSidePanelForm()">キャンセル</button>
+    </div>`;
+  setTimeout(() => { document.getElementById('qspf-title')?.focus(); }, 30);
+}
+
+function qspSelectXp(xp) {
+  document.querySelectorAll('.qspf-xp-opt').forEach(b => b.classList.remove('sel'));
+  document.querySelector(`.qspf-xp-opt[data-xp="${xp}"]`)?.classList.add('sel');
+}
+
+function hideQuestSidePanelForm() {
+  document.getElementById('qsp-add-btn').style.display = '';
+  const f = document.getElementById('qsp-form');
+  if (f) { f.style.display='none'; f.innerHTML=''; }
+}
+
+function saveQspForm(editId) {
+  const title = document.getElementById('qspf-title')?.value?.trim();
+  if (!title) { document.getElementById('qspf-title')?.focus(); return; }
+  const skillId  = document.getElementById('qspf-skill')?.value || 'sk_growth';
+  const habitId  = document.getElementById('qspf-habit')?.value || null;
+  const xpSel    = document.querySelector('.qspf-xp-opt.sel');
+  const xpReward = xpSel ? parseInt(xpSel.dataset.xp) : 20;
+
+  const qd = loadQuestData();
+  if (editId) {
+    const q = qd.dailyQuests.find(dq => dq.id === editId);
+    if (q) {
+      q.title=title; q.skillId=skillId; q.xpReward=xpReward;
+      if (habitId) q.habitId=habitId; else delete q.habitId;
+    }
+  } else {
+    qd.dailyQuests.push({ id:'dq_'+Date.now().toString(36), title, skillId, xpReward,
+      ...(habitId?{habitId}:{}), completedDates:[] });
+  }
+  saveQuestData(qd);
+  hideQuestSidePanelForm();
+  renderQuestSidePanel();
+}
 </script>
+
+<!-- ── Quest Side Panel ── -->
+<button class="quest-panel-fab" id="quest-panel-fab" onclick="toggleQuestSidePanel()" title="クエストパネル">⚔️</button>
+<div class="quest-side-panel" id="quest-side-panel">
+  <div class="qsp-header">
+    <div class="qsp-title">⚔️ デイリークエスト</div>
+    <button class="qsp-close" onclick="closeQuestSidePanel()">✕</button>
+  </div>
+  <div class="qsp-xp-wrap" id="qsp-xp-wrap"></div>
+  <div class="qsp-body" id="qsp-body"></div>
+  <div class="qsp-footer">
+    <button class="qsp-add-btn" id="qsp-add-btn" onclick="showQuestSidePanelForm(null)">＋ クエストを追加</button>
+    <div class="qsp-form" id="qsp-form" style="display:none"></div>
+  </div>
+</div>
 </body>
 </html>

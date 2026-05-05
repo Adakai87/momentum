@@ -1,0 +1,6 @@
+node_modules/
+.firebase/
+.claude/
+ios/
+*.mp3
+serviceAccountKey.json
